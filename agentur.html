@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentur — QUANTIFLUX Wien | Team & Vision</title>
+  <meta name="description" content="QUANTIFLUX ist ein interdisziplinäres Kreativstudio aus Wien. Lukas Kirschbichler und Jan Wagner verbinden Full Media Creative, AI-native Workflows und Security-Expertise.">
+  <link rel="canonical" href="https://quantiflux.at/agentur.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:     #000000;
+      --black-2:   #0A0A0A;
+      --black-3:   #111111;
+      --white:     #F5F2ED;
+      --orange:    #E42718;
+      --orange-2:  #FD5122;
+      --gray-mid:  #888888;
+      --gray-dim:  #333333;
+      --gray-line: #222222;
+      --f-display: 'Space Grotesk', sans-serif;
+      --f-mono:    'IBM Plex Mono', monospace;
+      --nav-h:     72px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--f-display); font-weight: 400; line-height: 1.5; overflow-x: hidden; cursor: none; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* CURSOR */
+    #cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--orange); pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); will-change: transform; }
+    #cursor-ring { position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1px solid rgba(228,39,24,0.45); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); will-change: transform; transition: width .3s, height .3s, border-color .3s; }
+    body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(228,39,24,0.7); }
+
+    /* SCROLL PROGRESS */
+    #scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 2px; background: var(--orange); z-index: 10000; transition: width .1s linear; }
+
+    /* GRAIN */
+    #grain { position: fixed; inset: -50%; width: 200%; height: 200%; pointer-events: none; z-index: 8000; opacity: .038; animation: grain-shift .9s steps(1) infinite; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); background-size: 256px 256px; }
+    @keyframes grain-shift {
+      0%  { transform: translate(0,0); } 10% { transform: translate(-2%,-4%); } 20% { transform: translate(-5%,2%); }
+      30% { transform: translate(3%,-6%); } 40% { transform: translate(-4%,5%); } 50% { transform: translate(-2%,-3%); }
+      60% { transform: translate(5%,3%); } 70% { transform: translate(2%,-4%); } 80% { transform: translate(-3%,6%); }
+      90% { transform: translate(4%,-2%); } 100% { transform: translate(0,0); }
+    }
+
+    /* NAV */
+    #nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; background: transparent; transition: background .4s ease, border-bottom .4s ease; }
+    #nav.scrolled { background: rgba(0,0,0,.92); border-bottom: 1px solid var(--gray-line); }
+    .nav-logo img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-family: var(--f-mono); font-size: .6875rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gray-mid); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta { font-family: var(--f-mono); font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 10px 20px; transition: background .2s, color .2s; }
+    .nav-cta:hover { background: var(--orange); color: var(--black); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* SHARED */
+    .section-label { font-family: var(--f-mono); font-size: .6875rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 24px; }
+    .section-num { font-family: var(--f-display); font-weight: 800; font-size: clamp(80px,18vw,280px); line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--gray-line); user-select: none; letter-spacing: -.04em; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 14px 28px; background: transparent; cursor: none; transition: background .2s, color .2s; }
+    .btn-primary:hover { background: var(--orange); color: var(--black); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--white); border: 1px solid rgba(245,242,237,.3); padding: 14px 28px; background: transparent; cursor: none; transition: border-color .2s; }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* PAGE HERO */
+    .page-hero {
+      min-height: 60vh;
+      padding: calc(var(--nav-h) + 80px) 56px 80px;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 80% 40%, rgba(228,39,24,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-hero-num {
+      position: absolute;
+      top: 0; right: -20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .page-hero-label {
+      font-family: var(--f-mono);
+      font-size: .6875rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-hero-h1 {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 9vw, 11rem);
+      line-height: .9;
+      letter-spacing: -.04em;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 36px;
+    }
+    .page-hero-h1 .line-white { color: var(--white); display: block; }
+    .page-hero-h1 .line-orange { color: var(--orange); display: block; }
+    .page-hero-tagline {
+      font-size: 1.125rem;
+      color: var(--gray-mid);
+      max-width: 560px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--gray-line);
+      margin-top: 80px;
+    }
+
+    /* TEAM SECTION */
+    .team-section {
+      background: var(--black-2);
+      padding: 120px 56px;
+    }
+    .team-section-header {
+      margin-bottom: 80px;
+    }
+    .team-section-title {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 6rem);
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .team-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .team-card {
+      background: var(--black-3);
+      padding: 56px 48px;
+      border: 1px solid var(--gray-line);
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .team-card:hover { border-color: var(--gray-dim); }
+    .team-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .team-card:hover::before { transform: scaleX(1); }
+
+    .team-card-num {
+      font-family: var(--f-mono);
+      font-size: .6875rem;
+      letter-spacing: .18em;
+      color: var(--orange);
+      margin-bottom: 32px;
+    }
+    .team-avatar-placeholder {
+      width: 72px;
+      height: 72px;
+      border: 1px solid var(--gray-dim);
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--f-mono);
+      font-size: 1.25rem;
+      color: var(--orange);
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+    .team-name {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      letter-spacing: -.02em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .team-role {
+      font-family: var(--f-mono);
+      font-size: .6875rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 28px;
+    }
+    .team-bio {
+      font-size: .9375rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+    .team-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .skill-tag {
+      font-family: var(--f-mono);
+      font-size: .575rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      border: 1px solid var(--gray-dim);
+      padding: 5px 10px;
+    }
+    .team-focus {
+      border-top: 1px solid var(--gray-line);
+      padding-top: 32px;
+    }
+    .team-focus-label {
+      font-family: var(--f-mono);
+      font-size: .575rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      margin-bottom: 16px;
+    }
+    .team-focus-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .team-focus-items li {
+      font-size: .875rem;
+      color: var(--gray-mid);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .team-focus-items li::before {
+      content: '→';
+      color: var(--orange);
+      font-family: var(--f-mono);
+      font-size: .75rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* NETWORK SECTION */
+    .network-section {
+      background: var(--black);
+      padding: 120px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .network-num-wrap {
+      position: absolute;
+      top: 0; right: -20px;
+      pointer-events: none;
+    }
+    .network-header {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      gap: 80px;
+      margin-bottom: 80px;
+    }
+    .network-title {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 6rem);
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: var(--white);
+    }
+    .network-intro {
+      font-size: 1.0625rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      align-self: end;
+      max-width: 520px;
+    }
+
+    .network-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--gray-line);
+    }
+    .network-item {
+      padding: 40px 40px 40px 0;
+      border-right: 1px solid var(--gray-line);
+      border-bottom: 1px solid var(--gray-line);
+      position: relative;
+    }
+    .network-item:nth-child(3n) { border-right: none; padding-right: 0; }
+    .network-item:nth-child(3n+2) { padding-left: 40px; }
+    .network-item:nth-child(3n+3) { padding-left: 40px; }
+    .network-item-num {
+      font-family: var(--f-mono);
+      font-size: .575rem;
+      letter-spacing: .18em;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+    .network-item-name {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -.01em;
+      color: var(--white);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .network-item-type {
+      font-family: var(--f-mono);
+      font-size: .575rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .network-item-desc {
+      font-size: .8125rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+    }
+
+    /* VALUES STRIP */
+    .values-section {
+      background: var(--black-2);
+      padding: 100px 56px;
+      border-top: 1px solid var(--gray-line);
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--gray-line);
+      margin-top: 48px;
+    }
+    .value-item {
+      padding: 40px 32px 40px 0;
+      border-right: 1px solid var(--gray-line);
+    }
+    .value-item:last-child { border-right: none; }
+    .value-item:not(:first-child) { padding-left: 32px; }
+    .value-num {
+      font-family: var(--f-mono);
+      font-size: .6875rem;
+      letter-spacing: .15em;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+    .value-title {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: .9375rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .value-body {
+      font-size: .8125rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+    }
+
+    /* CTA BAND */
+    .cta-band {
+      background: var(--black);
+      border-top: 1px solid var(--gray-line);
+      padding: 80px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .cta-band-title {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(1.75rem, 3vw, 3.5rem);
+      letter-spacing: -.03em;
+      color: var(--white);
+      max-width: 560px;
+    }
+    .cta-band-title span { color: var(--orange); }
+    .cta-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    /* FOOTER */
+    #footer { background: var(--black); border-top: 1px solid var(--gray-line); }
+    .footer-top-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 3rem 56px 2.5rem; border-bottom: 1px solid var(--gray-line); }
+    .footer-tagline { font-family: var(--f-mono); font-size: .6rem; letter-spacing: .14em; color: var(--gray-dim); line-height: 1.9; text-align: right; }
+    .footer-mid-row { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 1px solid var(--gray-line); }
+    .footer-col { padding: 2rem 2rem 2.5rem; border-right: 1px solid var(--gray-line); }
+    .footer-col:first-child { padding-left: 56px; }
+    .footer-col:last-child { border-right: none; }
+    .footer-col-label { font-family: var(--f-mono); font-size: .55rem; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 1.25rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .footer-col ul a, .footer-col ul span { font-size: .8125rem; color: var(--gray-mid); transition: color .2s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 56px; border-bottom: 1px solid var(--gray-line); }
+    .footer-nav { display: flex; gap: 32px; list-style: none; }
+    .footer-nav a { font-family: var(--f-mono); font-size: .575rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gray-dim); transition: color .2s; }
+    .footer-nav a:hover { color: var(--gray-mid); }
+    .footer-location { font-family: var(--f-mono); font-size: .575rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gray-dim); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 56px; }
+    .footer-copy, .footer-built { font-family: var(--f-mono); font-size: .55rem; letter-spacing: .1em; color: var(--gray-dim); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .page-hero { padding: calc(var(--nav-h) + 60px) 28px 60px; }
+      .team-section, .network-section, .values-section, .cta-band { padding: 80px 28px; }
+      .team-cards { grid-template-columns: 1fr; }
+      .network-header { grid-template-columns: 1fr; gap: 32px; }
+      .network-grid { grid-template-columns: 1fr 1fr; }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+      .cta-band { flex-direction: column; align-items: flex-start; }
+      .footer-top-row, .footer-row, .footer-bottom { padding-left: 28px; padding-right: 28px; }
+      .footer-mid-row { grid-template-columns: 1fr 1fr; }
+      .footer-col:first-child { padding-left: 28px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .network-grid { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+      .network-item { border-right: none; padding: 32px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="scroll-progress" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Hauptnavigation">
+  <a href="index.html" class="nav-logo" aria-label="QUANTIFLUX — Startseite">
+    <img src="brand_assets/logo.png" alt="QUANTIFLUX Logo" width="140" height="28">
+  </a>
+  <ul class="nav-links">
+    <li><a href="leistungen.html">Leistungen</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="agentur.html" class="active">Agentur</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+  </ul>
+  <a href="kontakt.html" class="nav-cta">Projekt starten →</a>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero" aria-label="Agentur Hero">
+  <div class="page-hero-num" aria-hidden="true">
+    <span class="section-num">01</span>
+  </div>
+  <p class="page-hero-label reveal">— Wer wir sind · Wien · Est. 2024</p>
+  <h1 class="page-hero-h1 reveal reveal-delay-1">
+    <span class="line-white">WIR SIND</span>
+    <span class="line-orange">QUANTIFLUX.</span>
+  </h1>
+  <p class="page-hero-tagline reveal reveal-delay-2">
+    Ein interdisziplinäres Kreativstudio aus Wien. Handwerkliche Präzision trifft AI-Kompetenz — für digitale Erlebnisse, die nicht nur gut aussehen, sondern messbar performen.
+  </p>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" aria-labelledby="team-heading">
+  <div class="team-section-header">
+    <p class="section-label reveal">— Das Team</p>
+    <h2 class="team-section-title reveal reveal-delay-1" id="team-heading">DIE KÖPFE<br>DAHINTER.</h2>
+  </div>
+
+  <div class="team-cards">
+
+    <!-- Lukas -->
+    <article class="team-card reveal">
+      <div class="team-card-num">01 / CO-FOUNDER</div>
+      <div class="team-avatar-placeholder" aria-hidden="true">LK</div>
+      <h3 class="team-name">Lukas Kirschbichler</h3>
+      <p class="team-role">Full Media Creative · AI Native</p>
+      <p class="team-bio">
+        Lukas ist der kreative Motor hinter QUANTIFLUX. Als Full Media Creative denkt er Marken holistisch — von der visuellen Identität über Web-Erlebnisse bis hin zu Bewegtbild. Was ihn von klassischen Kreativen unterscheidet: sein AI-nativer Ansatz. KI ist für ihn kein Tool von der Stange, sondern ein tief integriertes Werkzeug in jedem Workflow — für schnellere Iteration, bessere Qualität und Lösungen, die früher Monate gedauert hätten.
+      </p>
+      <div class="team-skills">
+        <span class="skill-tag">Web Design</span>
+        <span class="skill-tag">Brand Identity</span>
+        <span class="skill-tag">Motion & Film</span>
+        <span class="skill-tag">AI Workflows</span>
+        <span class="skill-tag">UX/UI</span>
+        <span class="skill-tag">Content Strategy</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">After Effects</span>
+        <span class="skill-tag">DaVinci Resolve</span>
+        <span class="skill-tag">Claude API</span>
+      </div>
+      <div class="team-focus">
+        <p class="team-focus-label">Schwerpunkte</p>
+        <ul class="team-focus-items">
+          <li>Ganzheitliche Kreativkonzeption — von der Strategie bis zum Pixel</li>
+          <li>AI-native Produktentwicklung und Workflow-Integration</li>
+          <li>Visuelle Markensysteme mit langfristiger Wirkung</li>
+          <li>Bewegtbild und digitale Erlebnisse für Unternehmen</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Jan -->
+    <article class="team-card reveal reveal-delay-1">
+      <div class="team-card-num">02 / CO-FOUNDER</div>
+      <div class="team-avatar-placeholder" aria-hidden="true">JW</div>
+      <h3 class="team-name">Jan Wagner</h3>
+      <p class="team-role">Software Developer · Security Expert</p>
+      <p class="team-bio">
+        Jan bringt die technische Tiefe, die ambitionierte Projekte brauchen. Als erfahrener Software Developer und Security Experte sorgt er dafür, dass das, was wir bauen, nicht nur funktioniert — sondern robust, sicher und skalierbar ist. Seine Security-Expertise macht den Unterschied bei Projekten, in denen Vertrauen kritisch ist: von Web-Apps mit sensiblen Nutzerdaten bis hin zu unternehmensinternen KI-Systemen.
+      </p>
+      <div class="team-skills">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">System Architecture</span>
+        <span class="skill-tag">Security Audits</span>
+        <span class="skill-tag">API Development</span>
+        <span class="skill-tag">Databases</span>
+        <span class="skill-tag">DevOps</span>
+        <span class="skill-tag">Penetration Testing</span>
+        <span class="skill-tag">AI Systems</span>
+        <span class="skill-tag">Backend Engineering</span>
+      </div>
+      <div class="team-focus">
+        <p class="team-focus-label">Schwerpunkte</p>
+        <ul class="team-focus-items">
+          <li>Skalierbare Backend-Architekturen und API-Systeme</li>
+          <li>Security-Assessments und sichere Softwareentwicklung</li>
+          <li>KI-System-Integration in bestehende Unternehmensinfrastruktur</li>
+          <li>Automatisierung komplexer Prozesse mit Python und LLMs</li>
+        </ul>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- NETWORK -->
+<section class="network-section" aria-labelledby="network-heading">
+  <div class="network-num-wrap" aria-hidden="true">
+    <span class="section-num">02</span>
+  </div>
+  <div class="network-header">
+    <div>
+      <p class="section-label reveal">— Unser Netzwerk</p>
+      <h2 class="network-title reveal reveal-delay-1" id="network-heading">
+        NETWORK &amp;<br>KOOPERATIONEN.
+      </h2>
+    </div>
+    <div>
+      <p class="network-intro reveal reveal-delay-1">
+        Wir glauben an spezialisierte Expertise statt aufgeblähter Strukturen. Für Projekte, die zusätzliche Disziplinen erfordern, greifen wir auf ein sorgfältig ausgewähltes Netzwerk an Freelancern und Spezialisten zurück — getestet, vertrauenswürdig, top in ihrem Feld.
+      </p>
+    </div>
+  </div>
+
+  <div class="network-grid">
+    <div class="network-item reveal">
+      <div class="network-item-num">— 01</div>
+      <div class="network-item-name">Fotografie & Produktion</div>
+      <div class="network-item-type">Cooperation Partner</div>
+      <p class="network-item-desc">Professionelle Fotografen und Videoproduktions-Teams für Shootings, Produktfotografie und aufwendige Filmproduktionen. Österreichweit und international verfügbar.</p>
+    </div>
+    <div class="network-item reveal reveal-delay-1">
+      <div class="network-item-num">— 02</div>
+      <div class="network-item-name">UI/UX Spezialisten</div>
+      <div class="network-item-type">Freelance Network</div>
+      <p class="network-item-desc">Erfahrene UI-Designer und UX-Researcher für komplexe App-Projekte und große Design-Systeme. Nahtlos in unsere Workflows integriert.</p>
+    </div>
+    <div class="network-item reveal reveal-delay-2">
+      <div class="network-item-num">— 03</div>
+      <div class="network-item-name">Textern & Redaktion</div>
+      <div class="network-item-type">Content Network</div>
+      <p class="network-item-desc">Fachtexter für verschiedene Branchen und Zielgruppen — von SEO-optimierten Website-Texten über PR-Kommunikation bis zu technischen Inhalten.</p>
+    </div>
+    <div class="network-item reveal">
+      <div class="network-item-num">— 04</div>
+      <div class="network-item-name">Print & Produktion</div>
+      <div class="network-item-type">Production Partner</div>
+      <p class="network-item-desc">Zuverlässige Druckereien und Produktionspartner für Geschäftsausstattung, Verpackungen, Messe-Materialien und Großformatdrucke in höchster Qualität.</p>
+    </div>
+    <div class="network-item reveal reveal-delay-1">
+      <div class="network-item-num">— 05</div>
+      <div class="network-item-name">Performance Marketing</div>
+      <div class="network-item-type">Agency Partner</div>
+      <p class="network-item-desc">Befreundete Performance-Agenturen für Paid Social, Google Ads und Attribution, wenn Projekte eine mediale Verlängerung über unser Leistungsspektrum hinaus brauchen.</p>
+    </div>
+    <div class="network-item reveal reveal-delay-2">
+      <div class="network-item-num">— 06</div>
+      <div class="network-item-name">Legal & Compliance</div>
+      <div class="network-item-type">Expert Network</div>
+      <p class="network-item-desc">Rechts- und Datenschutzexperten für DSGVO-Konformität, Impressumspflichten und technische Compliance bei sensiblen Projekten im AI- und Daten-Bereich.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section" aria-labelledby="values-heading">
+  <p class="section-label reveal">— Woran wir glauben</p>
+  <h2 class="reveal reveal-delay-1" id="values-heading" style="font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,4vw,5rem);letter-spacing:-.04em;line-height:1;color:var(--white);">UNSERE<br>PRINZIPIEN.</h2>
+  <div class="values-grid">
+    <div class="value-item reveal">
+      <div class="value-num">01</div>
+      <div class="value-title">Craft First</div>
+      <p class="value-body">Qualität vor Quantität. Kein Template-Denken, kein Copy-Paste. Jedes Projekt wird von Grund auf für Sie konzipiert — mit der Sorgfalt, die Ihre Marke verdient.</p>
+    </div>
+    <div class="value-item reveal reveal-delay-1">
+      <div class="value-num">02</div>
+      <div class="value-title">AI as a Tool</div>
+      <p class="value-body">KI ist für uns kein Aushängeschild, sondern Werkzeug im Hintergrund. Sie beschleunigt Iteration, verbessert Output — den kreativen Kern liefern wir selbst.</p>
+    </div>
+    <div class="value-item reveal reveal-delay-2">
+      <div class="value-num">03</div>
+      <div class="value-title">Scale Always</div>
+      <p class="value-body">Wir bauen Systeme, die mitwachsen. Nicht für den Moment, sondern für die nächsten fünf Jahre. Jede Investition soll sich langfristig rechnen.</p>
+    </div>
+    <div class="value-item reveal reveal-delay-3">
+      <div class="value-num">04</div>
+      <div class="value-title">Radical Honesty</div>
+      <p class="value-body">Wir sagen Ihnen, wenn etwas keinen Sinn macht — auch wenn es bedeutet, dass wir weniger Auftrag bekommen. Ehrliche Beratung ist die Grundlage für dauerhafte Zusammenarbeit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band reveal">
+  <p class="cta-band-title">Bereit ein Projekt zu<br><span>starten?</span></p>
+  <div class="cta-btns">
+    <a href="kontakt.html" class="btn-primary">PROJEKT ANFRAGEN →</a>
+    <a href="portfolio.html" class="btn-secondary">UNSERE ARBEIT</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer" role="contentinfo">
+  <div class="footer-top-row">
+    <a href="index.html" class="footer-logo" aria-label="QUANTIFLUX — Startseite">
+      <img src="brand_assets/logo.png" alt="QUANTIFLUX" width="120" height="22">
+    </a>
+    <div class="footer-tagline">Kreativagentur Wien.<br>Web Design · AI · Brand · Motion.</div>
+  </div>
+  <div class="footer-mid-row">
+    <div class="footer-col">
+      <span class="footer-col-label">Leistungen</span>
+      <ul role="list">
+        <li><a href="leistungen/web-design.html">Web Design &amp; Development</a></li>
+        <li><a href="leistungen/ai-systeme.html">AI-gestützte Systeme</a></li>
+        <li><a href="leistungen/brand-identity.html">Brand &amp; Visual Identity</a></li>
+        <li><a href="leistungen/motion-film.html">Motion &amp; Film Production</a></li>
+        <li><a href="leistungen/content-strategie.html">Content &amp; Digitalstrategie</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-label">Agentur</span>
+      <ul role="list">
+        <li><a href="agentur.html">Über uns</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-label">Kontakt</span>
+      <ul role="list">
+        <li><a href="mailto:hello@quantiflux.at">hello@quantiflux.at</a></li>
+        <li><span>Wien, Österreich</span></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-label">Rechtliches</span>
+      <ul role="list">
+        <li><a href="#">Impressum</a></li>
+        <li><a href="#">Datenschutz</a></li>
+        <li><a href="#">AGB</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-row">
+    <ul class="footer-nav" role="list">
+      <li><a href="leistungen.html">Leistungen</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="agentur.html">Agentur</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+      <li><a href="#">Impressum</a></li>
+      <li><a href="#">Datenschutz</a></li>
+    </ul>
+    <span class="footer-location">Wien · Österreich</span>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 QUANTIFLUX. Alle Rechte vorbehalten.</span>
+    <span class="footer-built">Designed &amp; built in Wien. Powered by AI.</span>
+  </div>
+</footer>
+
+<script>
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+  });
+  (function animateRing() {
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+    requestAnimationFrame(animateRing);
+  })();
+  document.querySelectorAll('a, button, [tabindex]').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrolled / total * 100) + '%';
+  }, { passive: true });
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>

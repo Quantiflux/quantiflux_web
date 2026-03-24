@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leistungen — QUANTIFLUX | Web Design, AI, Brand, Motion, Content Wien</title>
+  <meta name="description" content="Alle Leistungen von QUANTIFLUX: Web Design & Development, AI-Systeme, Brand Identity, Motion & Film Production und Content-Strategie. Full-Service Kreativagentur Wien.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://quantiflux.at/leistungen.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://quantiflux.at/leistungen.html">
+  <meta property="og:title" content="Leistungen — QUANTIFLUX Kreativagentur Wien">
+  <meta property="og:description" content="Fünf Disziplinen. Eine Quelle. Von der Strategie bis zum fertigen Produkt.">
+  <meta property="og:locale" content="de_AT">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════ */
+    :root {
+      --black:      #000000;
+      --black-2:    #0A0A0A;
+      --black-3:    #111111;
+      --white:      #F5F2ED;
+      --orange:     #E42718;
+      --orange-2:   #FD5122;
+      --gray-mid:   #888888;
+      --gray-dim:   #333333;
+      --gray-line:  #222222;
+      --f-display:  'Space Grotesk', sans-serif;
+      --f-mono:     'IBM Plex Mono', monospace;
+      --nav-h:      72px;
+    }
+
+    /* ═══════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--f-display);
+      font-weight: 400;
+      line-height: 1.5;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ═══════════════════════════════════════
+       CURSOR
+    ═══════════════════════════════════════ */
+    #cursor-dot {
+      position: fixed; top: 0; left: 0;
+      width: 8px; height: 8px;
+      background: var(--orange);
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(228,39,24,0.45);
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(228,39,24,0.7); }
+
+    /* ═══════════════════════════════════════
+       SCROLL PROGRESS
+    ═══════════════════════════════════════ */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 0%; height: 2px;
+      background: var(--orange);
+      z-index: 10000;
+      transition: width 0.1s linear;
+    }
+
+    /* ═══════════════════════════════════════
+       GRAIN
+    ═══════════════════════════════════════ */
+    #grain {
+      position: fixed; inset: -50%;
+      width: 200%; height: 200%;
+      pointer-events: none; z-index: 8000;
+      opacity: 0.038;
+      animation: grain-shift 0.9s steps(1) infinite;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+    @keyframes grain-shift {
+      0%   { transform: translate(0,0); }
+      10%  { transform: translate(-2%,-4%); }
+      20%  { transform: translate(-5%,2%); }
+      30%  { transform: translate(3%,-6%); }
+      40%  { transform: translate(-4%,5%); }
+      50%  { transform: translate(-2%,-3%); }
+      60%  { transform: translate(5%,3%); }
+      70%  { transform: translate(2%,-4%); }
+      80%  { transform: translate(-3%,6%); }
+      90%  { transform: translate(4%,-2%); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* ═══════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════ */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      z-index: 500;
+      background: transparent;
+      transition: background 0.4s ease, border-bottom 0.4s ease;
+    }
+    #nav.scrolled { background: rgba(0,0,0,0.92); border-bottom: 1px solid var(--gray-line); }
+    .nav-logo img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-family: var(--f-mono); font-size: 0.6875rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gray-mid); transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta {
+      font-family: var(--f-mono); font-size: 0.6875rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--orange); border: 1px solid var(--orange);
+      padding: 10px 20px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--orange); color: var(--black); }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    #hero {
+      padding-top: var(--nav-h);
+      min-height: 72vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 100px;
+      padding-left: 56px;
+      padding-right: 56px;
+      border-bottom: 1px solid var(--gray-line);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse 55% 65% at 80% 50%, rgba(228,39,24,0.04) 0%, transparent 65%);
+    }
+    .hero-label {
+      font-family: var(--f-mono); font-size: 0.6875rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 32px;
+      position: relative; z-index: 1;
+    }
+    .hero-h1 {
+      font-family: var(--f-display); font-weight: 800;
+      font-size: clamp(72px, 13vw, 200px);
+      line-height: 0.88; letter-spacing: -0.04em;
+      color: var(--white); margin-bottom: 36px;
+      position: relative; z-index: 1;
+    }
+    .hero-tagline {
+      font-size: 1.0625rem; color: var(--gray-mid);
+      max-width: 520px; line-height: 1.7;
+      position: relative; z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════
+       INTRO STRIP
+    ═══════════════════════════════════════ */
+    #intro-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--gray-line);
+    }
+    .intro-col {
+      padding: 40px 32px;
+      border-right: 1px solid var(--gray-line);
+    }
+    .intro-col:last-child { border-right: none; }
+    .intro-col-label {
+      font-family: var(--f-mono); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--orange); display: block; margin-bottom: 14px;
+    }
+    .intro-col-text {
+      font-size: 0.875rem; color: var(--gray-mid); line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════════════
+       SERVICES SECTION
+    ═══════════════════════════════════════ */
+    #services {
+      background: var(--black-2);
+    }
+    .services-header {
+      padding: 80px 56px 60px;
+      border-bottom: 1px solid var(--gray-line);
+    }
+    .section-label {
+      font-family: var(--f-mono); font-size: 0.6875rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gray-mid); margin-bottom: 24px; display: block;
+    }
+    .services-title {
+      font-family: var(--f-display); font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 7rem);
+      letter-spacing: -0.04em; line-height: 1.0; color: var(--white);
+    }
+
+    .service-list { list-style: none; }
+    .service-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: start;
+      gap: 0 40px;
+      padding: 48px 56px;
+      border-bottom: 1px solid var(--gray-line);
+      position: relative;
+      transition: background 0.2s;
+      cursor: none;
+    }
+    .service-row::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px; background: var(--orange);
+      transform: scaleY(0); transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+    .service-row:hover::before { transform: scaleY(1); }
+    .service-row:hover { background: rgba(228,39,24,0.03); }
+    .service-row:hover .svc-name { color: var(--orange); }
+    .service-row:hover .svc-arrow { opacity: 1; transform: translateX(0); }
+
+    .svc-num-big {
+      font-family: var(--f-display); font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1; color: transparent;
+      -webkit-text-stroke: 1px var(--gray-dim);
+      letter-spacing: -0.04em; align-self: start;
+    }
+    .svc-content { display: flex; flex-direction: column; gap: 10px; }
+    .svc-name {
+      font-family: var(--f-display); font-weight: 700;
+      font-size: clamp(1.25rem, 2vw, 2rem);
+      letter-spacing: -0.02em; color: var(--white);
+      transition: color 0.2s; text-transform: uppercase;
+    }
+    .svc-tags {
+      font-family: var(--f-mono); font-size: 0.6875rem;
+      letter-spacing: 0.12em; color: var(--orange); text-transform: uppercase;
+    }
+    .svc-desc {
+      font-size: 0.9375rem; color: var(--gray-mid);
+      line-height: 1.7; max-width: 600px; margin-top: 6px;
+    }
+    .svc-arrow {
+      font-family: var(--f-mono); font-size: 1.5rem;
+      color: var(--orange); opacity: 0;
+      transform: translateX(-12px);
+      transition: opacity 0.2s, transform 0.2s;
+      align-self: center;
+    }
+
+    /* ═══════════════════════════════════════
+       CTA BAND
+    ═══════════════════════════════════════ */
+    #cta-band {
+      background: var(--black);
+      border-top: 1px solid var(--gray-line);
+      padding: 80px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .cta-band-left {}
+    .cta-band-eyebrow {
+      font-family: var(--f-mono); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gray-mid); display: block; margin-bottom: 16px;
+    }
+    .cta-band-headline {
+      font-family: var(--f-display); font-weight: 800;
+      font-size: clamp(2rem, 4vw, 5rem);
+      letter-spacing: -0.04em; line-height: 0.92;
+    }
+    .cta-band-headline .line-white { color: var(--white); display: block; }
+    .cta-band-headline .line-orange { color: var(--orange); display: block; }
+    .cta-btns { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+
+    /* ═══════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════ */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--f-mono); font-size: 0.75rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--orange); border: 1px solid var(--orange);
+      padding: 14px 28px; background: transparent;
+      cursor: none; transition: background 0.2s, color 0.2s;
+    }
+    .btn-primary:hover { background: var(--orange); color: var(--black); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--f-mono); font-size: 0.75rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--white); border: 1px solid rgba(245,242,237,0.3);
+      padding: 14px 28px; background: transparent;
+      cursor: none; transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    #footer {
+      background: var(--black);
+      border-top: 1px solid var(--gray-line);
+    }
+    .footer-top-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 3rem 56px 2.5rem;
+      border-bottom: 1px solid var(--gray-line);
+    }
+    .footer-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); opacity: 0.5; }
+    .footer-tagline {
+      font-family: var(--f-mono); font-size: 0.6rem;
+      letter-spacing: 0.14em; color: var(--gray-dim); line-height: 1.9; text-align: right;
+    }
+    .footer-mid-row {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-bottom: 1px solid var(--gray-line);
+    }
+    .footer-col { padding: 2rem 2rem 2.5rem; border-right: 1px solid var(--gray-line); }
+    .footer-col:first-child { padding-left: 56px; }
+    .footer-col:last-child { border-right: none; }
+    .footer-col-label {
+      font-family: var(--f-mono); font-size: 0.55rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--orange); display: block; margin-bottom: 1.25rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul a, .footer-col ul span {
+      font-size: 0.8125rem; color: var(--gray-mid); transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; padding: 16px 56px; flex-wrap: wrap;
+    }
+    .footer-nav { display: flex; gap: 32px; list-style: none; }
+    .footer-nav a {
+      font-family: var(--f-mono); font-size: 0.625rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gray-dim); transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--gray-mid); }
+    .footer-location {
+      font-family: var(--f-mono); font-size: 0.625rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-dim);
+    }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 56px; border-top: 1px solid var(--gray-line);
+    }
+    .footer-copy, .footer-built {
+      font-family: var(--f-mono); font-size: 0.625rem;
+      letter-spacing: 0.1em; color: var(--gray-dim);
+    }
+
+    /* ═══════════════════════════════════════
+       REVEAL
+    ═══════════════════════════════════════ */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+
+    /* ═══════════════════════════════════════
+       REDUCED MOTION
+    ═══════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      #grain { display: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      #hero { padding-left: 40px; padding-right: 40px; }
+      .service-row { padding: 40px 40px; }
+      #cta-band { padding: 60px 40px; }
+      .services-header { padding: 60px 40px 48px; }
+    }
+    @media (max-width: 900px) {
+      #nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { padding-left: 28px; padding-right: 28px; min-height: 60vh; padding-bottom: 72px; }
+      #intro-strip { grid-template-columns: 1fr 1fr; }
+      .intro-col:nth-child(2) { border-right: none; }
+      .intro-col:nth-child(3) { border-top: 1px solid var(--gray-line); }
+      .intro-col:nth-child(4) { border-top: 1px solid var(--gray-line); border-right: none; }
+      .service-row { padding: 36px 28px; grid-template-columns: 60px 1fr auto; gap: 0 20px; }
+      .services-header { padding: 48px 28px 40px; }
+      #cta-band { padding: 60px 28px; flex-direction: column; align-items: flex-start; }
+      .footer-mid-row { grid-template-columns: 1fr 1fr; }
+      .footer-col:first-child { padding-left: 28px; }
+      .footer-top-row { padding: 2rem 28px; }
+      .footer-row { padding: 16px 28px; }
+      .footer-bottom { padding: 20px 28px; }
+    }
+    @media (max-width: 480px) {
+      #hero { padding-left: 20px; padding-right: 20px; }
+      #intro-strip { grid-template-columns: 1fr; }
+      .intro-col { border-right: none; border-top: 1px solid var(--gray-line); }
+      .intro-col:first-child { border-top: none; }
+      .service-row { grid-template-columns: 48px 1fr; gap: 0 16px; padding: 28px 20px; }
+      .svc-arrow { display: none; }
+      .cta-btns { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .footer-mid-row { grid-template-columns: 1fr; }
+      .footer-nav { display: none; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+
+  <nav id="nav" role="navigation" aria-label="Hauptnavigation">
+    <a href="index.html" class="nav-logo" aria-label="QUANTIFLUX — Startseite">
+      <img src="brand_assets/logo.png" alt="QUANTIFLUX Logo" width="140" height="28" style="filter:brightness(0) invert(1)">
+    </a>
+    <ul class="nav-links">
+      <li><a href="leistungen.html" class="active">Leistungen</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="agentur.html">Agentur</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+    <a href="kontakt.html" class="nav-cta">Projekt starten →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" aria-label="Leistungen Hero">
+    <p class="hero-label reveal">— Was wir machen · Wien · Full Service</p>
+    <h1 class="hero-h1 reveal reveal-delay-1">UNSERE<br>LEISTUNGEN.</h1>
+    <p class="hero-tagline reveal reveal-delay-2">Von der Strategie bis zum fertigen Produkt. Fünf Disziplinen. Eine Quelle.</p>
+  </section>
+
+  <!-- INTRO STRIP -->
+  <div id="intro-strip" aria-hidden="false">
+    <div class="intro-col reveal">
+      <span class="intro-col-label">Strategie</span>
+      <p class="intro-col-text">Jedes Projekt beginnt mit Denken, nicht mit Machen.</p>
+    </div>
+    <div class="intro-col reveal reveal-delay-1">
+      <span class="intro-col-label">Handwerk</span>
+      <p class="intro-col-text">Technische Exzellenz in jeder Disziplin.</p>
+    </div>
+    <div class="intro-col reveal reveal-delay-2">
+      <span class="intro-col-label">AI-beschleunigt</span>
+      <p class="intro-col-text">Schneller ohne Qualitätsverlust.</p>
+    </div>
+    <div class="intro-col reveal reveal-delay-3">
+      <span class="intro-col-label">Messbar</span>
+      <p class="intro-col-text">Outputs, die performen — nachweislich.</p>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services" aria-labelledby="services-heading">
+    <div class="services-header">
+      <span class="section-label reveal">— Unsere Disziplinen</span>
+      <h2 class="services-title reveal reveal-delay-1" id="services-heading">FÜNF DISZIPLINEN.</h2>
+    </div>
+    <ul class="service-list" role="list">
+
+      <li>
+        <a href="leistungen/web-design.html" class="service-row reveal" tabindex="0" aria-label="Web Design & Development — Mehr erfahren">
+          <div class="svc-num-big" aria-hidden="true">01</div>
+          <div class="svc-content">
+            <h3 class="svc-name">Web Design &amp; Development</h3>
+            <div class="svc-tags">Next.js · React · Figma · Sanity CMS</div>
+            <p class="svc-desc">Websites und Web-Apps, die nicht nur aussehen, sondern auch performen.</p>
+          </div>
+          <div class="svc-arrow" aria-hidden="true">→</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="leistungen/ai-systeme.html" class="service-row reveal reveal-delay-1" tabindex="0" aria-label="AI-gestützte Systeme — Mehr erfahren">
+          <div class="svc-num-big" aria-hidden="true">02</div>
+          <div class="svc-content">
+            <h3 class="svc-name">AI-gestützte Systeme</h3>
+            <div class="svc-tags">LLM · OpenAI · Claude API · n8n · Python</div>
+            <p class="svc-desc">Intelligente Automatisierung, die echte Arbeit abnimmt.</p>
+          </div>
+          <div class="svc-arrow" aria-hidden="true">→</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="leistungen/brand-identity.html" class="service-row reveal reveal-delay-2" tabindex="0" aria-label="Brand & Visual Identity — Mehr erfahren">
+          <div class="svc-num-big" aria-hidden="true">03</div>
+          <div class="svc-content">
+            <h3 class="svc-name">Brand &amp; Visual Identity</h3>
+            <div class="svc-tags">Logo · Brand Guide · Corporate Design</div>
+            <p class="svc-desc">Marken, die im Gedächtnis bleiben.</p>
+          </div>
+          <div class="svc-arrow" aria-hidden="true">→</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="leistungen/motion-film.html" class="service-row reveal reveal-delay-3" tabindex="0" aria-label="Motion & Film Production — Mehr erfahren">
+          <div class="svc-num-big" aria-hidden="true">04</div>
+          <div class="svc-content">
+            <h3 class="svc-name">Motion &amp; Film Production</h3>
+            <div class="svc-tags">Imagefilm · Motion Graphics · After Effects</div>
+            <p class="svc-desc">Bewegtbild, das Emotionen weckt.</p>
+          </div>
+          <div class="svc-arrow" aria-hidden="true">→</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="leistungen/content-strategie.html" class="service-row reveal" tabindex="0" aria-label="Content & Digitalstrategie — Mehr erfahren">
+          <div class="svc-num-big" aria-hidden="true">05</div>
+          <div class="svc-content">
+            <h3 class="svc-name">Content &amp; Digitalstrategie</h3>
+            <div class="svc-tags">SEO · Content Marketing · Social Media</div>
+            <p class="svc-desc">Strategische Inhalte, die gefunden werden.</p>
+          </div>
+          <div class="svc-arrow" aria-hidden="true">→</div>
+        </a>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- CTA BAND -->
+  <div id="cta-band">
+    <div class="cta-band-left">
+      <span class="cta-band-eyebrow reveal">— Bereit loszulegen?</span>
+      <h2 class="cta-band-headline reveal reveal-delay-1">
+        <span class="line-white">PROJEKT</span>
+        <span class="line-orange">ANFRAGEN.</span>
+      </h2>
+    </div>
+    <div class="cta-btns reveal reveal-delay-2">
+      <a href="kontakt.html" class="btn-primary">PROJEKT ANFRAGEN →</a>
+      <a href="portfolio.html" class="btn-secondary">PORTFOLIO ANSEHEN</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="footer" role="contentinfo">
+    <div class="footer-top-row">
+      <a href="index.html" class="footer-logo" aria-label="QUANTIFLUX — Startseite">
+        <img src="brand_assets/logo.png" alt="QUANTIFLUX" width="120" height="22">
+      </a>
+      <div class="footer-tagline">Kreativagentur Wien.<br>Web Design · AI · Brand · Motion.</div>
+    </div>
+    <div class="footer-mid-row">
+      <div class="footer-col">
+        <span class="footer-col-label">Leistungen</span>
+        <ul role="list">
+          <li><a href="leistungen/web-design.html">Web Design &amp; Development</a></li>
+          <li><a href="leistungen/ai-systeme.html">AI-gestützte Systeme</a></li>
+          <li><a href="leistungen/brand-identity.html">Brand &amp; Visual Identity</a></li>
+          <li><a href="leistungen/motion-film.html">Motion &amp; Film Production</a></li>
+          <li><a href="leistungen/content-strategie.html">Content &amp; Digitalstrategie</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Agentur</span>
+        <ul role="list">
+          <li><a href="agentur.html">Über uns</a></li>
+          <li><a href="portfolio.html">Projekte</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+          <li><a href="#">Karriere</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Kontakt</span>
+        <ul role="list">
+          <li><a href="mailto:hello@quantiflux.at">hello@quantiflux.at</a></li>
+          <li><span>Wien, Österreich</span></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Rechtliches</span>
+        <ul role="list">
+          <li><a href="#">Impressum</a></li>
+          <li><a href="#">Datenschutz</a></li>
+          <li><a href="#">AGB</a></li>
+          <li><a href="#">Cookie-Einstellungen</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-row">
+      <ul class="footer-nav" role="list">
+        <li><a href="leistungen.html">Leistungen</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="agentur.html">Agentur</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="#">Impressum</a></li>
+        <li><a href="#">Datenschutz</a></li>
+      </ul>
+      <span class="footer-location">Wien · Österreich</span>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 QUANTIFLUX. Alle Rechte vorbehalten.</span>
+      <span class="footer-built">Designed &amp; built in Wien. Powered by AI.</span>
+    </div>
+  </footer>
+
+  <script>
+    /* CURSOR */
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+    });
+    (function animateRing() {
+      rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+      ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+      requestAnimationFrame(animateRing);
+    })();
+    document.querySelectorAll('a, button, .service-row, [tabindex]').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    /* SCROLL PROGRESS */
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrolled / total * 100) + '%';
+    }, { passive: true });
+
+    /* NAV SCROLL STATE */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* SCROLL REVEAL */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => revealObs.observe(el));
+  </script>
+</body>
+</html>

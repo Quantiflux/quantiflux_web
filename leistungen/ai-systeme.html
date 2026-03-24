@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-gestützte Systeme — QUANTIFLUX Wien</title>
+  <meta name="description" content="KI-Automatisierung und AI-Systeme aus Wien. LLM-Integrationen, Chatbots, Prozessautomatisierung mit n8n und Custom AI-Workflows für Ihr Unternehmen.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://quantiflux.at/leistungen/ai-systeme.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI-gestützte Systeme — QUANTIFLUX Wien">
+  <meta property="og:description" content="Intelligente Automatisierung, die echte Arbeit abnimmt — keine Demo-Toys.">
+  <meta property="og:locale" content="de_AT">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black:     #000000;
+      --black-2:   #0A0A0A;
+      --black-3:   #111111;
+      --white:     #F5F2ED;
+      --orange:    #E42718;
+      --orange-2:  #FD5122;
+      --gray-mid:  #888888;
+      --gray-dim:  #333333;
+      --gray-line: #222222;
+      --f-display: 'Space Grotesk', sans-serif;
+      --f-mono:    'IBM Plex Mono', monospace;
+      --nav-h:     72px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--f-display); font-weight: 400; line-height: 1.5; overflow-x: hidden; cursor: none; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    #cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--orange); pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); will-change: transform; }
+    #cursor-ring { position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1px solid rgba(228,39,24,0.45); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); will-change: transform; transition: width 0.3s, height 0.3s, border-color 0.3s; }
+    body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(228,39,24,0.7); }
+
+    #scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 2px; background: var(--orange); z-index: 10000; transition: width 0.1s linear; }
+
+    #grain { position: fixed; inset: -50%; width: 200%; height: 200%; pointer-events: none; z-index: 8000; opacity: 0.038; animation: grain-shift 0.9s steps(1) infinite; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); background-size: 256px 256px; }
+    @keyframes grain-shift {
+      0%  {transform:translate(0,0)} 10% {transform:translate(-2%,-4%)} 20% {transform:translate(-5%,2%)} 30% {transform:translate(3%,-6%)}
+      40% {transform:translate(-4%,5%)} 50% {transform:translate(-2%,-3%)} 60% {transform:translate(5%,3%)} 70% {transform:translate(2%,-4%)}
+      80% {transform:translate(-3%,6%)} 90% {transform:translate(4%,-2%)} 100% {transform:translate(0,0)}
+    }
+
+    #nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; background: transparent; transition: background 0.4s ease, border-bottom 0.4s ease; }
+    #nav.scrolled { background: rgba(0,0,0,0.92); border-bottom: 1px solid var(--gray-line); }
+    .nav-logo img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-mid); transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 10px 20px; transition: background 0.2s, color 0.2s; }
+    .nav-cta:hover { background: var(--orange); color: var(--black); }
+
+    /* HERO */
+    #hero { padding-top: var(--nav-h); min-height: 80vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 100px; padding-left: 56px; padding-right: 56px; border-bottom: 1px solid var(--gray-line); position: relative; overflow: hidden; }
+    #hero::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 50% 60% at 85% 45%, rgba(228,39,24,0.055) 0%, transparent 60%); }
+    .back-link { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 48px; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; position: relative; z-index: 1; }
+    .back-link:hover { color: var(--orange); }
+    .hero-label { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 28px; position: relative; z-index: 1; }
+    .hero-h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(60px, 10vw, 160px); line-height: 0.88; letter-spacing: -0.04em; color: var(--white); margin-bottom: 36px; position: relative; z-index: 1; }
+    .hero-tagline { font-size: 1.0625rem; color: var(--gray-mid); max-width: 600px; line-height: 1.7; position: relative; z-index: 1; }
+
+    /* SECTIONS */
+    .section { padding: 100px 56px; border-bottom: 1px solid var(--gray-line); }
+    .section-label { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 24px; display: block; }
+    .section-headline { font-family: var(--f-display); font-weight: 800; font-size: clamp(2rem, 4vw, 5rem); letter-spacing: -0.04em; line-height: 1.0; color: var(--white); margin-bottom: 48px; }
+    .section-body { font-size: 1rem; color: var(--gray-mid); line-height: 1.75; margin-bottom: 32px; max-width: 640px; }
+
+    /* WHAT WE DO */
+    #what-we-do { background: var(--black-2); }
+    .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .services-detail-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .service-detail-item { display: flex; align-items: flex-start; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--gray-line); }
+    .service-detail-item:first-child { border-top: 1px solid var(--gray-line); }
+    .service-detail-num { font-family: var(--f-mono); font-size: 0.575rem; letter-spacing: 0.15em; color: var(--orange); flex-shrink: 0; padding-top: 3px; }
+    .service-detail-name { font-family: var(--f-display); font-weight: 500; font-size: 0.9375rem; color: var(--white); letter-spacing: -0.01em; }
+
+    /* USE CASES */
+    #use-cases { background: var(--black); }
+    .use-cases-grid { display: grid; grid-template-columns: repeat(3,1fr); border-left: 1px solid var(--gray-line); }
+    .use-case-card { padding: 48px 36px; border-right: 1px solid var(--gray-line); border-bottom: 1px solid var(--gray-line); transition: background 0.2s; }
+    .use-case-card:hover { background: rgba(228,39,24,0.03); }
+    .use-case-num { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.2em; color: var(--orange); display: block; margin-bottom: 20px; }
+    .use-case-title { font-family: var(--f-display); font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em; color: var(--white); text-transform: uppercase; margin-bottom: 16px; }
+    .use-case-body { font-size: 0.9375rem; color: var(--gray-mid); line-height: 1.7; }
+
+    /* TECH STACK */
+    #tech { background: var(--black-2); }
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .tech-tag { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); border: 1px solid var(--gray-dim); padding: 8px 16px; transition: border-color 0.2s, color 0.2s; }
+    .tech-tag:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* PACKAGES */
+    #packages { background: var(--black); }
+    .packages-grid { display: grid; grid-template-columns: repeat(3,1fr); border-left: 1px solid var(--gray-line); }
+    .package-card { padding: 48px 36px; border-right: 1px solid var(--gray-line); border-bottom: 1px solid var(--gray-line); transition: background 0.2s; }
+    .package-card:hover { background: rgba(228,39,24,0.03); }
+    .package-card--featured { border-top: 3px solid var(--orange); margin-top: -3px; }
+    .package-badge { font-family: var(--f-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--black); background: var(--orange); padding: 4px 10px; display: inline-block; margin-bottom: 20px; }
+    .package-name { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--white); text-transform: uppercase; margin-bottom: 8px; }
+    .package-price { font-family: var(--f-mono); font-size: 0.875rem; color: var(--orange); margin-bottom: 28px; letter-spacing: 0.05em; }
+    .package-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+    .package-features li { font-size: 0.875rem; color: var(--gray-mid); padding-left: 20px; position: relative; line-height: 1.5; }
+    .package-features li::before { content: '—'; position: absolute; left: 0; color: var(--orange); font-family: var(--f-mono); }
+
+    /* BUTTONS */
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 14px 28px; background: transparent; cursor: none; transition: background 0.2s, color 0.2s; }
+    .btn-primary:hover { background: var(--orange); color: var(--black); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); border: 1px solid rgba(245,242,237,0.3); padding: 14px 28px; background: transparent; cursor: none; transition: border-color 0.2s; }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* CTA */
+    #cta { padding: 100px 56px; background: var(--black-2); border-bottom: 1px solid var(--gray-line); text-align: center; }
+    .cta-headline { font-family: var(--f-display); font-weight: 800; font-size: clamp(2.5rem, 5vw, 7rem); letter-spacing: -0.04em; line-height: 0.92; color: var(--white); margin-bottom: 48px; }
+    .cta-headline .accent { color: var(--orange); }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* FOOTER */
+    #footer { background: var(--black); border-top: 1px solid var(--gray-line); }
+    .footer-top-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 3rem 56px 2.5rem; border-bottom: 1px solid var(--gray-line); }
+    .footer-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); opacity: 0.5; }
+    .footer-tagline { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.14em; color: var(--gray-dim); line-height: 1.9; text-align: right; }
+    .footer-mid-row { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 1px solid var(--gray-line); }
+    .footer-col { padding: 2rem 2rem 2.5rem; border-right: 1px solid var(--gray-line); }
+    .footer-col:first-child { padding-left: 56px; }
+    .footer-col:last-child { border-right: none; }
+    .footer-col-label { font-family: var(--f-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 1.25rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul a, .footer-col ul span { font-size: 0.8125rem; color: var(--gray-mid); transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 56px; flex-wrap: wrap; }
+    .footer-nav { display: flex; gap: 32px; list-style: none; }
+    .footer-nav a { font-family: var(--f-mono); font-size: 0.625rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-dim); transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--gray-mid); }
+    .footer-location { font-family: var(--f-mono); font-size: 0.625rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-dim); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 24px 56px; border-top: 1px solid var(--gray-line); }
+    .footer-copy, .footer-built { font-family: var(--f-mono); font-size: 0.625rem; letter-spacing: 0.1em; color: var(--gray-dim); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      #grain { display: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 1100px) {
+      .section { padding: 80px 40px; }
+      #hero { padding: var(--nav-h) 40px 80px; }
+      #cta { padding: 80px 40px; }
+    }
+    @media (max-width: 900px) {
+      #nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { padding: calc(var(--nav-h) + 48px) 28px 72px; min-height: auto; }
+      .section { padding: 64px 28px; }
+      .two-col-grid { grid-template-columns: 1fr; gap: 48px; }
+      .use-cases-grid { grid-template-columns: 1fr; border-left: none; }
+      .use-case-card { border-right: none; border-left: 1px solid var(--gray-line); }
+      .packages-grid { grid-template-columns: 1fr; border-left: none; }
+      .package-card { border-right: none; border-left: 1px solid var(--gray-line); }
+      #cta { padding: 64px 28px; }
+      .footer-mid-row { grid-template-columns: 1fr 1fr; }
+      .footer-col:first-child { padding-left: 28px; }
+      .footer-top-row { padding: 2rem 28px; }
+      .footer-row { padding: 16px 28px; }
+      .footer-bottom { padding: 20px 28px; }
+    }
+    @media (max-width: 480px) {
+      #hero { padding: calc(var(--nav-h) + 32px) 20px 60px; }
+      .section { padding: 52px 20px; }
+      .cta-btns { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .footer-mid-row { grid-template-columns: 1fr; }
+      .footer-nav { display: none; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      #cta { padding: 52px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+
+  <nav id="nav" role="navigation" aria-label="Hauptnavigation">
+    <a href="../index.html" class="nav-logo">
+      <img src="../brand_assets/logo.png" alt="QUANTIFLUX Logo" width="140" height="28" style="filter:brightness(0) invert(1)">
+    </a>
+    <ul class="nav-links">
+      <li><a href="../leistungen.html" class="active">Leistungen</a></li>
+      <li><a href="../portfolio.html">Portfolio</a></li>
+      <li><a href="../agentur.html">Agentur</a></li>
+      <li><a href="../kontakt.html">Kontakt</a></li>
+    </ul>
+    <a href="../kontakt.html" class="nav-cta">Projekt starten →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" aria-label="AI Systeme Hero">
+    <a href="../leistungen.html" class="back-link reveal">← Alle Leistungen</a>
+    <p class="hero-label reveal">— Leistung 02 / 05</p>
+    <h1 class="hero-h1 reveal reveal-delay-1">AI-GESTÜTZTE<br>SYSTEME.</h1>
+    <p class="hero-tagline reveal reveal-delay-2">Intelligente Automatisierung, die echte Arbeit abnimmt — keine Demo-Toys. KI, die in Ihre Workflows integriert wird und sofort Mehrwert liefert.</p>
+  </section>
+
+  <!-- WHAT WE DO -->
+  <section id="what-we-do" class="section" aria-labelledby="what-heading">
+    <div class="two-col-grid">
+      <div>
+        <span class="section-label reveal">— Was wir bauen</span>
+        <h2 class="section-headline reveal reveal-delay-1" id="what-heading">ECHTE KI.<br>KEINE<br>SPIELZEUGE.</h2>
+        <p class="section-body reveal reveal-delay-2">Wir entwickeln KI-Lösungen, die nicht in PowerPoint-Decks existieren, sondern in Ihrem Tagesgeschäft. Jedes System wird für Ihren spezifischen Use Case konzipiert, in bestehende Tools integriert und so übergeben, dass Ihr Team es tatsächlich nutzt.</p>
+      </div>
+      <div>
+        <ul class="services-detail-list reveal" role="list">
+          <li class="service-detail-item">
+            <span class="service-detail-num">01</span>
+            <span class="service-detail-name">KI-Chatbots &amp; virtuelle Assistenten</span>
+          </li>
+          <li class="service-detail-item">
+            <span class="service-detail-num">02</span>
+            <span class="service-detail-name">Prozessautomatisierung &amp; Workflows (n8n, Zapier)</span>
+          </li>
+          <li class="service-detail-item">
+            <span class="service-detail-num">03</span>
+            <span class="service-detail-name">Custom LLM-Integrationen &amp; API-Anbindungen</span>
+          </li>
+          <li class="service-detail-item">
+            <span class="service-detail-num">04</span>
+            <span class="service-detail-name">Datenanalyse &amp; KI-gestützte Reports</span>
+          </li>
+          <li class="service-detail-item">
+            <span class="service-detail-num">05</span>
+            <span class="service-detail-name">Interne KI-Tools &amp; Dashboards</span>
+          </li>
+          <li class="service-detail-item">
+            <span class="service-detail-num">06</span>
+            <span class="service-detail-name">KI-Beratung &amp; Strategieentwicklung</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASES -->
+  <section id="use-cases" class="section" aria-labelledby="usecases-heading">
+    <span class="section-label reveal">— Anwendungsfälle</span>
+    <h2 class="section-headline reveal reveal-delay-1" id="usecases-heading">WO KI WIRKLICH<br>HILFT.</h2>
+    <div class="use-cases-grid reveal reveal-delay-2">
+      <div class="use-case-card">
+        <span class="use-case-num">01</span>
+        <div class="use-case-title">Kundensupport automatisieren</div>
+        <p class="use-case-body">KI-Chatbot, der 80% der eingehenden Anfragen ohne menschlichen Eingriff beantwortet. Trainiert auf Ihrer Dokumentation, integriert in Ihre bestehenden Support-Kanäle.</p>
+      </div>
+      <div class="use-case-card">
+        <span class="use-case-num">02</span>
+        <div class="use-case-title">Dokumenten-Analyse</div>
+        <p class="use-case-body">Automatische Kategorisierung, Zusammenfassung und Extraktion strukturierter Daten aus PDFs, Verträgen und unstrukturierten Dokumenten. Spart Stunden manueller Arbeit täglich.</p>
+      </div>
+      <div class="use-case-card">
+        <span class="use-case-num">03</span>
+        <div class="use-case-title">Content-Produktion skalieren</div>
+        <p class="use-case-body">KI-gestützte Workflows für konsistente, markenkonforme Inhalte in hohem Volumen. Von Produktbeschreibungen bis zu Social-Media-Posts — mit Qualitätskontrolle im Prozess.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section id="tech" class="section" aria-labelledby="tech-heading">
+    <span class="section-label reveal">— Technologien</span>
+    <h2 class="section-headline reveal reveal-delay-1" id="tech-heading">UNSER KI-STACK.</h2>
+    <div class="tech-tags reveal reveal-delay-2">
+      <span class="tech-tag">Claude API</span>
+      <span class="tech-tag">OpenAI</span>
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">n8n</span>
+      <span class="tech-tag">LangChain</span>
+      <span class="tech-tag">Supabase</span>
+      <span class="tech-tag">Vector Databases</span>
+      <span class="tech-tag">FastAPI</span>
+      <span class="tech-tag">Zapier</span>
+      <span class="tech-tag">Make</span>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section id="packages" class="section" aria-labelledby="packages-heading">
+    <span class="section-label reveal">— Pakete &amp; Preise</span>
+    <h2 class="section-headline reveal reveal-delay-1" id="packages-heading">TRANSPARENTE<br>PREISE.</h2>
+    <div class="packages-grid reveal reveal-delay-2">
+      <div class="package-card">
+        <div class="package-name">KI-Beratung</div>
+        <div class="package-price">ab 1.900 €</div>
+        <ul class="package-features">
+          <li>KI-Readiness-Analyse Ihres Unternehmens</li>
+          <li>Use-Case-Identifikation &amp; Priorisierung</li>
+          <li>Tool- &amp; Plattformempfehlung</li>
+          <li>Roadmap für KI-Einführung</li>
+          <li>Workshop mit Ihrem Team</li>
+          <li>Schriftliche Dokumentation</li>
+        </ul>
+        <a href="../kontakt.html" class="btn-secondary">ANFRAGEN →</a>
+      </div>
+      <div class="package-card package-card--featured">
+        <span class="package-badge">Empfohlen</span>
+        <div class="package-name">KI-Integration</div>
+        <div class="package-price">ab 7.900 €</div>
+        <ul class="package-features">
+          <li>Custom KI-Workflow-Entwicklung</li>
+          <li>LLM-API-Integration in bestehende Tools</li>
+          <li>Chatbot oder Automatisierungssystem</li>
+          <li>Testing &amp; Qualitätssicherung</li>
+          <li>Team-Onboarding &amp; Schulung</li>
+          <li>4 Wochen Post-Launch-Support</li>
+          <li>Dokumentation &amp; Wartungshandbuch</li>
+        </ul>
+        <a href="../kontakt.html" class="btn-primary">ANFRAGEN →</a>
+      </div>
+      <div class="package-card">
+        <div class="package-name">Custom KI-System</div>
+        <div class="package-price">ab 18.900 €</div>
+        <ul class="package-features">
+          <li>Vollständiges Custom AI-System</li>
+          <li>RAG-Architektur &amp; Vector-Datenbank</li>
+          <li>Fine-Tuning &amp; Custom Model-Training</li>
+          <li>Skalierbare Backend-Infrastruktur</li>
+          <li>Dashboard &amp; Analytics</li>
+          <li>Dedicated AI-Ingenieur</li>
+          <li>3 Monate laufender Support</li>
+          <li>SLA &amp; Priority-Support</li>
+        </ul>
+        <a href="../kontakt.html" class="btn-secondary">ANFRAGEN →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" aria-label="KI Projekt anfragen">
+    <h2 class="cta-headline reveal">KI PROJEKT<br><span class="accent">STARTEN.</span></h2>
+    <div class="cta-btns reveal reveal-delay-1">
+      <a href="../kontakt.html" class="btn-primary">KI PROJEKT ANFRAGEN →</a>
+      <a href="../leistungen.html" class="btn-secondary">ALLE LEISTUNGEN</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer" role="contentinfo">
+    <div class="footer-top-row">
+      <a href="../index.html" class="footer-logo">
+        <img src="../brand_assets/logo.png" alt="QUANTIFLUX" width="120" height="22">
+      </a>
+      <div class="footer-tagline">Kreativagentur Wien.<br>Web Design · AI · Brand · Motion.</div>
+    </div>
+    <div class="footer-mid-row">
+      <div class="footer-col">
+        <span class="footer-col-label">Leistungen</span>
+        <ul role="list">
+          <li><a href="../leistungen/web-design.html">Web Design &amp; Development</a></li>
+          <li><a href="../leistungen/ai-systeme.html">AI-gestützte Systeme</a></li>
+          <li><a href="../leistungen/brand-identity.html">Brand &amp; Visual Identity</a></li>
+          <li><a href="../leistungen/motion-film.html">Motion &amp; Film Production</a></li>
+          <li><a href="../leistungen/content-strategie.html">Content &amp; Digitalstrategie</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Agentur</span>
+        <ul role="list">
+          <li><a href="../agentur.html">Über uns</a></li>
+          <li><a href="../portfolio.html">Projekte</a></li>
+          <li><a href="../kontakt.html">Kontakt</a></li>
+          <li><a href="#">Karriere</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Kontakt</span>
+        <ul role="list">
+          <li><a href="mailto:hello@quantiflux.at">hello@quantiflux.at</a></li>
+          <li><span>Wien, Österreich</span></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Rechtliches</span>
+        <ul role="list">
+          <li><a href="#">Impressum</a></li>
+          <li><a href="#">Datenschutz</a></li>
+          <li><a href="#">AGB</a></li>
+          <li><a href="#">Cookie-Einstellungen</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-row">
+      <ul class="footer-nav" role="list">
+        <li><a href="../leistungen.html">Leistungen</a></li>
+        <li><a href="../portfolio.html">Portfolio</a></li>
+        <li><a href="../agentur.html">Agentur</a></li>
+        <li><a href="../kontakt.html">Kontakt</a></li>
+        <li><a href="#">Impressum</a></li>
+        <li><a href="#">Datenschutz</a></li>
+      </ul>
+      <span class="footer-location">Wien · Österreich</span>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 QUANTIFLUX. Alle Rechte vorbehalten.</span>
+      <span class="footer-built">Designed &amp; built in Wien. Powered by AI.</span>
+    </div>
+  </footer>
+
+  <script>
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+    });
+    (function animateRing() {
+      rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+      ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+      requestAnimationFrame(animateRing);
+    })();
+    document.querySelectorAll('a, button, [tabindex]').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (window.scrollY / total * 100) + '%';
+    }, { passive: true });
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => revealObs.observe(el));
+  </script>
+</body>
+</html>

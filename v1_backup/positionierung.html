@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Positionierung — Marke & Strategie · QUANTIFLUX Wien</title>
+  <meta name="description" content="Positionierungsstrategie von Quantiflux Wien: Die Kategorie besetzen, die nur du besetzt. Klare Differenzierung, nachhaltiger Wettbewerbsvorteil.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,600;0,700;0,800;0,900;1,700;1,900&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:#e42718; --red-2:#fd5122; --black:#080808; --dark-1:#0e0e0e;
+      --dark-2:#161616; --dark-3:#202020; --cream:#f0ebe4;
+      --cream-dim:#7a7570; --cream-mid:#b0a89f; --nav-h:80px;
+      --f-display:'Barlow Condensed',sans-serif; --f-serif:'DM Serif Display',serif;
+      --f-mono:'IBM Plex Mono',monospace; --f-body:'Barlow',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--cream);font-family:var(--f-body);font-weight:300;overflow-x:hidden;cursor:none}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+
+    #cur{position:fixed;width:9px;height:9px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+    #cur-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(228,39,24,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s}
+    body.cursor-hover #cur{width:18px;height:18px}
+    body.cursor-hover #cur-ring{width:56px;height:56px;border-color:rgba(228,39,24,.7)}
+    body.cursor-click #cur{width:5px;height:5px}
+
+    #grain{position:fixed;inset:-200%;width:400%;height:400%;opacity:.035;pointer-events:none;z-index:8000;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 7s steps(10) infinite}
+    @keyframes grain{0%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}20%{transform:translate(3%,1%)}30%{transform:translate(-1%,4%)}40%{transform:translate(4%,-2%)}50%{transform:translate(-3%,3%)}60%{transform:translate(1%,-1%)}70%{transform:translate(-4%,2%)}80%{transform:translate(2%,-4%)}90%{transform:translate(-1%,1%)}}
+    @keyframes fade-up{to{opacity:1;transform:translateY(0)}}
+    @keyframes fade-in{to{opacity:1}}
+
+    .sr{opacity:0;transform:translateY(32px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .sr.in{opacity:1;transform:translateY(0)}
+    .sr-d1{transition-delay:.1s}.sr-d2{transition-delay:.2s}.sr-d3{transition-delay:.3s}.sr-d4{transition-delay:.4s}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);padding:0 3rem;display:flex;align-items:center;justify-content:space-between;transition:background .4s}
+    nav.scrolled{background:rgba(8,8,8,.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,235,228,.04)}
+    nav::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,.7) 0%,transparent 100%);z-index:-1;pointer-events:none}
+    .nav-logo img{height:20px;width:auto}
+    .nav-panel{display:flex;align-items:center;gap:2.5rem}
+    .nav-links{display:flex;gap:0;list-style:none}
+    .nav-links>li>a{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-mid);transition:color .3s;padding:.5rem 1.1rem;display:flex;align-items:center;gap:.4rem}
+    .nav-links>li>a:hover,.nav-links>li.mega-open>a{color:var(--cream)}
+    .nav-arrow{font-size:.55rem;transition:transform .3s}
+    .nav-links>li.mega-open .nav-arrow{transform:rotate(180deg)}
+    .nav-cta{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:.55rem 1.2rem;transition:background .3s,color .3s;white-space:nowrap}
+    .nav-cta:hover{background:var(--red);color:#fff}
+    .nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:none;padding:6px;z-index:501;width:36px;height:36px}
+    .nav-hamburger span{display:block;width:24px;height:1.5px;background:var(--cream-mid);transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .2s;transform-origin:center}
+    .nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.7px,4.7px);background:var(--cream)}
+    .nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.7px,-4.7px);background:var(--cream)}
+
+    .mega-menu{position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(8,8,8,.97);border-top:1px solid rgba(228,39,24,.15);border-bottom:1px solid rgba(240,235,228,.04);padding:3.5rem 3rem 4rem;display:none;grid-template-columns:1.2fr repeat(3,1fr);gap:3rem;opacity:0;transform:translateY(-10px);transition:opacity .3s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1);pointer-events:none;backdrop-filter:blur(24px);z-index:490}
+    .mega-menu.is-visible{display:grid}
+    .mega-menu.is-open{opacity:1;transform:translateY(0);pointer-events:all}
+    .mega-feature{padding-right:3rem;border-right:1px solid rgba(240,235,228,.05)}
+    .mega-feature-cat{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:1.5rem}
+    .mega-feature-title{font-family:var(--f-display);font-size:clamp(2.5rem,3.5vw,5rem);font-weight:900;text-transform:uppercase;line-height:.88;margin-bottom:1.5rem;color:var(--cream)}
+    .mega-feature-desc{font-size:.85rem;line-height:1.75;color:var(--cream-dim)}
+    .mega-col h4{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:1.4rem;padding-bottom:.8rem;border-bottom:1px solid rgba(240,235,228,.05)}
+    .mega-col ul{list-style:none}
+    .mega-col ul li a{display:flex;align-items:center;gap:.8rem;font-size:.9rem;font-weight:300;color:var(--cream-mid);padding:.65rem 0;transition:color .25s,gap .25s;position:relative}
+    .mega-col ul li a::before{content:'→';font-size:.65rem;color:var(--red);opacity:0;transform:translateX(-6px);transition:opacity .2s,transform .25s}
+    .mega-col ul li a:hover{color:var(--cream);gap:1.2rem}
+    .mega-col ul li a:hover::before{opacity:1;transform:translateX(0)}
+    .mega-col ul li a .mega-tag{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);border:1px solid rgba(228,39,24,.3);padding:.15rem .5rem;margin-left:auto}
+    #mega-backdrop{display:none;position:fixed;inset:var(--nav-h) 0 0 0;background:rgba(0,0,0,.5);z-index:480;opacity:0;transition:opacity .3s}
+    #mega-backdrop.visible{display:block}
+    #mega-backdrop.faded{opacity:1}
+
+    .btn-red{display:inline-flex;align-items:center;gap:.8rem;background:var(--red);color:#fff;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;padding:1.1rem 2.2rem;transition:background .3s,transform .2s,box-shadow .3s;position:relative;overflow:hidden;will-change:transform}
+    .btn-red:hover{background:var(--red-2);transform:translateY(-2px);box-shadow:0 14px 40px rgba(228,39,24,.35)}
+    .btn-ghost{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream-mid);display:flex;align-items:center;gap:.4rem;transition:color .3s,gap .3s}
+    .btn-ghost:hover{color:var(--cream);gap:.7rem}
+
+    .sec{padding:9rem 3rem}
+    .inner{max-width:1380px;margin:0 auto}
+    .sec-label{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:1.4rem;display:flex;align-items:center;gap:.8rem}
+    .sec-label::after{content:'';width:36px;height:1px;background:var(--red)}
+    .breadcrumb{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-bottom:3rem}
+    .breadcrumb a:hover{color:var(--cream)}
+    .breadcrumb .sep{color:rgba(240,235,228,.2)}
+
+    /* ══ HERO ══ */
+    .po-hero{min-height:100vh;padding:calc(var(--nav-h) + 6rem) 3rem 5rem;display:grid;grid-template-columns:1fr 420px;gap:4rem;align-items:end;position:relative;overflow:hidden;background:var(--dark-1)}
+    .po-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 75% 45%,rgba(228,39,24,.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+    .po-hero-left{position:relative;z-index:1}
+    .ph-label{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:1.4rem;display:flex;align-items:center;gap:.8rem}
+    .ph-label::after{content:'';width:36px;height:1px;background:var(--red)}
+    .po-h1{font-family:var(--f-display);font-size:clamp(3.5rem,9vw,12rem);font-weight:900;text-transform:uppercase;line-height:.87;margin-bottom:3.5rem}
+    .po-h1 .ln{display:block;overflow:hidden}
+    .po-h1 .ln span{display:block;opacity:0;transform:translateY(105%);animation:fade-up 1s cubic-bezier(.16,1,.3,1) forwards}
+    .po-h1 .ln:nth-child(1) span{animation-delay:.3s}
+    .po-h1 .ln:nth-child(2) span{animation-delay:.45s}
+    .po-h1 .ln:nth-child(3) span{animation-delay:.6s}
+    .po-desc{font-size:1.05rem;line-height:1.75;color:var(--cream-mid);max-width:500px;margin-bottom:3rem;opacity:0;animation:fade-up .9s cubic-bezier(.16,1,.3,1) .8s forwards}
+    .po-actions{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;opacity:0;animation:fade-up .9s cubic-bezier(.16,1,.3,1) .95s forwards}
+
+    /* Positioning Matrix */
+    .po-matrix{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;height:380px;opacity:0;animation:fade-in .9s ease 1.1s forwards}
+    .po-matrix::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:10;border:1px solid rgba(240,235,228,.06)}
+    .po-matrix::after{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(228,39,24,.2);z-index:10}
+    .po-axis-x{position:absolute;bottom:-1.8rem;left:0;right:0;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);display:flex;justify-content:space-between}
+    .po-axis-y-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(228,39,24,.2);z-index:10}
+    .po-axis-y{position:absolute;left:-1.4rem;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center}
+    .po-axis-y span{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);writing-mode:vertical-rl;transform:rotate(180deg)}
+    .po-quadrant{padding:1.4rem;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;transition:background .4s}
+    .po-quadrant:nth-child(1){background:rgba(228,39,24,.12);border-bottom-right-radius:0}
+    .po-quadrant:nth-child(2){background:rgba(14,14,14,.8)}
+    .po-quadrant:nth-child(3){background:rgba(14,14,14,.8)}
+    .po-quadrant:nth-child(4){background:rgba(14,14,14,.8)}
+    .po-quadrant:nth-child(1)::before{content:'★';position:absolute;top:1rem;right:1rem;font-size:.65rem;color:var(--red)}
+    .po-quadrant-label{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-mid);margin-bottom:.4rem}
+    .po-quadrant-title{font-family:var(--f-display);font-size:1.1rem;font-weight:700;text-transform:uppercase;color:var(--cream);line-height:1.1}
+    .po-quadrant:nth-child(1) .po-quadrant-title{color:#fff}
+    .po-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--red);top:calc(25% - 5px);left:calc(25% - 5px);box-shadow:0 0 16px rgba(228,39,24,.5);animation:pulse-dot 2s ease-in-out infinite}
+    @keyframes pulse-dot{0%,100%{box-shadow:0 0 16px rgba(228,39,24,.5)}50%{box-shadow:0 0 28px rgba(228,39,24,.8),0 0 48px rgba(228,39,24,.3)}}
+
+    /* ══ PROBLEM SECTION ══ */
+    .problem-sec{background:var(--dark-2)}
+    .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:5rem}
+    .problem-card{padding:3rem 2.5rem;border-left:1px solid rgba(240,235,228,.05);position:relative;overflow:hidden;transition:border-color .4s}
+    .problem-card:last-child{border-right:1px solid rgba(240,235,228,.05)}
+    .problem-card::before{content:'';position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.16,1,.3,1);z-index:0}
+    .problem-card:hover::before{transform:scaleX(1)}
+    .problem-card:hover{border-color:transparent}
+    .problem-card>*{position:relative;z-index:1}
+    .problem-n{font-family:var(--f-display);font-size:clamp(4rem,8vw,8rem);font-weight:900;color:rgba(240,235,228,.04);line-height:1;margin-bottom:1.5rem;transition:color .4s}
+    .problem-card:hover .problem-n{color:rgba(255,255,255,.12)}
+    .problem-icon{width:36px;height:36px;margin-bottom:1.4rem;color:var(--red);transition:color .4s}
+    .problem-card:hover .problem-icon{color:#fff}
+    .problem-title{font-family:var(--f-display);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;text-transform:uppercase;margin-bottom:1rem;transition:color .4s}
+    .problem-desc{font-size:.88rem;line-height:1.7;color:var(--cream-dim);transition:color .4s}
+    .problem-card:hover .problem-desc{color:rgba(255,255,255,.75)}
+    .problem-card:hover .problem-title{color:#fff}
+
+    /* ══ FRAMEWORK SECTION ══ */
+    .fw-sec{background:var(--black)}
+    .fw-head{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;margin-bottom:6rem}
+    .fw-title{font-family:var(--f-display);font-size:clamp(2.8rem,5vw,6rem);font-weight:900;text-transform:uppercase;line-height:.9}
+    .fw-intro{font-size:.95rem;line-height:1.8;color:var(--cream-mid);max-width:440px;padding-bottom:1rem;border-bottom:1px solid rgba(240,235,228,.06)}
+    .fw-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+    .fw-steps::before{content:'';position:absolute;top:3.2rem;left:2rem;right:2rem;height:1px;background:linear-gradient(to right,rgba(228,39,24,.3),rgba(228,39,24,.1),rgba(228,39,24,.3));z-index:0}
+    .fw-step{padding:0 1.5rem 2.5rem;position:relative;z-index:1}
+    .fw-step-top{display:flex;align-items:center;gap:0;margin-bottom:2rem;position:relative}
+    .fw-step-n{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;color:var(--red);width:2rem}
+    .fw-step-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--red);background:var(--black);flex-shrink:0;transition:background .3s,transform .3s}
+    .fw-step:hover .fw-step-dot{background:var(--red);transform:scale(1.3)}
+    .fw-step-title{font-family:var(--f-display);font-size:1.05rem;font-weight:700;text-transform:uppercase;color:var(--cream);margin-bottom:.75rem;margin-top:1.2rem}
+    .fw-step-desc{font-size:.78rem;line-height:1.7;color:var(--cream-dim)}
+    .fw-step-tag{font-family:var(--f-mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-top:1rem;display:block}
+
+    /* ══ DIFFERENZIERUNG SECTION ══ */
+    .diff-sec{background:var(--dark-2);position:relative;overflow:hidden}
+    .diff-sec::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(240,235,228,.015) 0px,rgba(240,235,228,.015) 1px,transparent 1px,transparent 40px);pointer-events:none}
+    .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+    .diff-left{}
+    .diff-title{font-family:var(--f-display);font-size:clamp(2.4rem,4.5vw,5.5rem);font-weight:900;text-transform:uppercase;line-height:.92;margin-bottom:2rem}
+    .diff-subtitle{font-size:.95rem;line-height:1.8;color:var(--cream-mid);margin-bottom:3rem}
+    .diff-checks{display:flex;flex-direction:column;gap:1rem}
+    .diff-check{display:flex;align-items:flex-start;gap:1.2rem;font-size:.88rem;line-height:1.6;color:var(--cream-mid)}
+    .diff-check-icon{width:20px;height:20px;border:1px solid var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+    .diff-check-icon::after{content:'✓';font-size:.6rem;color:var(--red)}
+    .diff-right{display:flex;flex-direction:column;gap:1px;border:1px solid rgba(240,235,228,.06)}
+    .diff-row{display:grid;grid-template-columns:1fr 1fr;gap:0}
+    .diff-cell{padding:1.8rem 2rem;border-bottom:1px solid rgba(240,235,228,.06);font-size:.85rem}
+    .diff-cell:first-child{border-right:1px solid rgba(240,235,228,.06);color:var(--cream-dim)}
+    .diff-cell:last-child{color:var(--cream);font-weight:500}
+    .diff-row:last-child .diff-cell{border-bottom:none}
+    .diff-header-row .diff-cell{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;padding:1rem 2rem;background:rgba(240,235,228,.02)}
+    .diff-header-row .diff-cell:last-child{color:var(--red)}
+
+    /* ══ QUOTE SECTION ══ */
+    .quote-sec{padding:8rem 3rem;background:var(--black)}
+    .quote-inner{max-width:900px;margin:0 auto;text-align:center}
+    .quote-mark{font-family:var(--f-serif);font-size:5rem;line-height:.5;color:rgba(228,39,24,.2);display:block;margin-bottom:1rem}
+    .quote-text{font-family:var(--f-serif);font-size:clamp(1.6rem,3.5vw,2.8rem);font-style:italic;line-height:1.35;color:var(--cream);margin-bottom:2.5rem}
+    .quote-author{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red)}
+
+    /* ══ DELIVERABLES SECTION ══ */
+    .deliver-sec{background:var(--red);padding:7rem 3rem}
+    .deliver-inner{max-width:1380px;margin:0 auto}
+    .deliver-top{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:5rem}
+    .deliver-label{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1.2rem}
+    .deliver-title{font-family:var(--f-display);font-size:clamp(2.8rem,5vw,7rem);font-weight:900;text-transform:uppercase;line-height:.9;color:#fff}
+    .deliver-intro{font-size:.95rem;line-height:1.75;color:rgba(255,255,255,.75);margin-top:1.5rem}
+    .deliver-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+    .deliver-item{padding:2rem 1.8rem;background:rgba(0,0,0,.18);display:flex;flex-direction:column;gap:.7rem;transition:background .3s}
+    .deliver-item:hover{background:rgba(0,0,0,.28)}
+    .deliver-item-n{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.16em;color:rgba(255,255,255,.4)}
+    .deliver-item-name{font-family:var(--f-display);font-size:1rem;font-weight:700;text-transform:uppercase;color:#fff}
+    .deliver-item-desc{font-size:.78rem;line-height:1.6;color:rgba(255,255,255,.65)}
+
+    /* ══ CTA SECTION ══ */
+    .cta-sec{padding:10rem 3rem;background:var(--dark-1);text-align:center;position:relative;overflow:hidden}
+    .cta-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--f-display);font-size:clamp(8rem,18vw,24rem);font-weight:900;text-transform:uppercase;color:rgba(240,235,228,.018);white-space:nowrap;pointer-events:none;letter-spacing:-.02em;line-height:1}
+    .cta-label{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:2rem;display:flex;align-items:center;justify-content:center;gap:.8rem}
+    .cta-label::before,.cta-label::after{content:'';width:36px;height:1px;background:var(--red)}
+    .cta-title{font-family:var(--f-display);font-size:clamp(3rem,6vw,8rem);font-weight:900;text-transform:uppercase;line-height:.9;margin-bottom:2.5rem}
+    .cta-sub{font-size:1rem;color:var(--cream-mid);margin-bottom:3.5rem;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta-actions{display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap}
+
+    /* ══ FOOTER ══ */
+    footer{background:var(--black);border-top:1px solid rgba(240,235,228,.04);padding:5rem 3rem 3rem}
+    .ft-inner{max-width:1380px;margin:0 auto}
+    .ft-top{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:4rem;padding-bottom:4rem;border-bottom:1px solid rgba(240,235,228,.05)}
+    .ft-brand-tagline{font-family:var(--f-serif);font-size:1.5rem;font-style:italic;color:var(--cream-mid);line-height:1.4;margin-top:1.5rem;max-width:240px}
+    .ft-logo img{height:18px;width:auto}
+    .ft-col h4{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:1.5rem}
+    .ft-col ul{list-style:none;display:flex;flex-direction:column;gap:.75rem}
+    .ft-col ul li a{font-size:.85rem;color:var(--cream-dim);transition:color .25s}
+    .ft-col ul li a:hover{color:var(--cream)}
+    .ft-bot{display:flex;align-items:center;justify-content:space-between;padding-top:2.5rem}
+    .ft-copy{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+    .ft-links{display:flex;gap:2rem}
+    .ft-links a{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim);transition:color .25s}
+    .ft-links a:hover{color:var(--cream)}
+
+    @media(max-width:900px){
+      nav{padding:0 1.5rem}
+      .nav-panel{display:none;position:fixed;inset:var(--nav-h) 0 0 0;background:rgba(8,8,8,.98);flex-direction:column;align-items:flex-start;padding:2rem 1.5rem;gap:0;overflow-y:auto}
+      .nav-panel.open{display:flex}
+      .nav-links{flex-direction:column;width:100%;gap:.5rem}
+      .nav-links>li>a{font-size:.85rem;padding:1rem 0;border-bottom:1px solid rgba(240,235,228,.04)}
+      .nav-hamburger{display:flex}
+      .nav-cta{display:none}
+      .mega-menu{position:static;display:none;grid-template-columns:1fr;padding:1rem 1rem 1.5rem;border:none;opacity:1;transform:none;backdrop-filter:none;pointer-events:all}
+      .mega-menu.is-visible{display:grid}
+      .mega-feature{display:none}
+      .po-hero{grid-template-columns:1fr;min-height:auto;padding-bottom:4rem}
+      .po-matrix{height:300px;margin-top:3rem}
+      .problem-grid{grid-template-columns:1fr}
+      .fw-steps{grid-template-columns:1fr 1fr;gap:3rem}
+      .fw-steps::before{display:none}
+      .diff-grid{grid-template-columns:1fr}
+      .deliver-top{grid-template-columns:1fr}
+      .deliver-grid{grid-template-columns:1fr 1fr}
+      .ft-top{grid-template-columns:1fr 1fr}
+      .sec{padding:5rem 1.5rem}
+      .fw-head{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      .deliver-grid{grid-template-columns:1fr}
+      .fw-steps{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="mega-backdrop"></div>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="index.html" class="nav-logo"><img src="brand_assets/logo.png" alt="QUANTIFLUX"></a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-panel" id="navPanel">
+      <ul class="nav-links">
+        <li class="has-mega">
+          <a href="#">Creative <span class="nav-arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-feature">
+              <p class="mega-feature-cat">Creative</p>
+              <h2 class="mega-feature-title">Marken,<br>die bleiben.</h2>
+              <p class="mega-feature-desc">Kreative Exekution, die Aufmerksamkeit hält und Conversions treibt.</p>
+            </div>
+            <div class="mega-col">
+              <h4>Marke &amp; Strategie</h4>
+              <ul>
+                <li><a href="brand-identity.html">Brand Identity</a></li>
+                <li><a href="positionierung.html">Positionierung</a></li>
+                <li><a href="content-strategie.html">Content-Strategie</a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>Produktion</h4>
+              <ul>
+                <li><a href="#">Video &amp; Foto</a></li>
+                <li><a href="#">Ad Creatives <span class="mega-tag">Neu</span></a></li>
+                <li><a href="#">UGC-Konzepte</a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>Web</h4>
+              <ul>
+                <li><a href="#">Webdesign</a></li>
+                <li><a href="#">Landing Pages</a></li>
+                <li><a href="#">CRO-Design</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="has-mega">
+          <a href="#">KI <span class="nav-arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-feature">
+              <p class="mega-feature-cat">KI-gestützt</p>
+              <h2 class="mega-feature-title">Daten,<br>intelligent.</h2>
+              <p class="mega-feature-desc">KI, eingesetzt wo sie echten Mehrwert schafft.</p>
+            </div>
+            <div class="mega-col">
+              <h4>Strategie</h4>
+              <ul><li><a href="#">KI-Strategie</a></li><li><a href="#">Predictive Analytics</a></li></ul>
+            </div>
+            <div class="mega-col">
+              <h4>Automatisierung</h4>
+              <ul><li><a href="#">Workflow-Automation <span class="mega-tag">Hot</span></a></li><li><a href="#">Reporting</a></li></ul>
+            </div>
+            <div class="mega-col">
+              <h4>Daten</h4>
+              <ul><li><a href="#">Dashboards</a></li><li><a href="#">Attribution</a></li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="has-mega">
+          <a href="#">Entwicklung <span class="nav-arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-feature">
+              <p class="mega-feature-cat">Entwicklung</p>
+              <h2 class="mega-feature-title">Tech,<br>die skaliert.</h2>
+              <p class="mega-feature-desc">Infrastruktur die mit deinem Wachstum mithalten.</p>
+            </div>
+            <div class="mega-col">
+              <h4>Web-Entwicklung</h4>
+              <ul><li><a href="#">Next.js / React</a></li><li><a href="#">E-Commerce</a></li></ul>
+            </div>
+            <div class="mega-col">
+              <h4>Tracking</h4>
+              <ul><li><a href="#">GA4 &amp; GTM</a></li><li><a href="#">Server-Side <span class="mega-tag">Pro</span></a></li></ul>
+            </div>
+            <div class="mega-col">
+              <h4>Beratung</h4>
+              <ul><li><a href="#">Tech-Audit</a></li><li><a href="#">Data Architecture</a></li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="has-mega">
+          <a href="#">Über uns <span class="nav-arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-feature">
+              <p class="mega-feature-cat">Über uns</p>
+              <h2 class="mega-feature-title">Daten<br>&amp; Seele.</h2>
+              <p class="mega-feature-desc">Analytiker, Kreative und Ingenieure — vereint.</p>
+            </div>
+            <div class="mega-col">
+              <h4>Unternehmen</h4>
+              <ul><li><a href="#">Über Quantiflux</a></li><li><a href="#">Wien, AT</a></li></ul>
+            </div>
+            <div class="mega-col">
+              <h4>Arbeit</h4>
+              <ul><li><a href="#">Referenzen</a></li><li><a href="#">Blog</a></li></ul>
+            </div>
+            <div class="mega-col">
+              <h4>Karriere</h4>
+              <ul><li><a href="#">Offene Stellen <span class="mega-tag">2×</span></a></li></ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <a href="mailto:hello@quantiflux.com" class="nav-cta">Projekt starten</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="po-hero">
+    <div class="po-hero-left">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span>
+        <a href="marke-strategie.html">Marke &amp; Strategie</a><span class="sep">/</span>
+        <span>Positionierung</span>
+      </nav>
+      <p class="ph-label">Creative — Positionierung</p>
+      <h1 class="po-h1">
+        <span class="ln"><span>DIE KATEGORIE,</span></span>
+        <span class="ln"><span>DIE NUR DU</span></span>
+        <span class="ln"><span>besetzt.</span></span>
+      </h1>
+      <p class="po-desc">Positionierung entscheidet, ob du konkurrierst oder dominierst. Wir entwickeln die strategische Grundlage, auf der all deine Kommunikation aufbaut — klar, unnachahmbar, skalierbar.</p>
+      <div class="po-actions">
+        <a href="mailto:hello@quantiflux.com" class="btn-red magnetic">Gespräch anfragen &nbsp;→</a>
+        <a href="#framework" class="btn-ghost">Das Framework ↓</a>
+      </div>
+    </div>
+    <div class="po-matrix" aria-hidden="true">
+      <div class="po-quadrant">
+        <div class="po-dot"></div>
+        <p class="po-quadrant-label">Dein Ziel</p>
+        <p class="po-quadrant-title">Premium<br>Leader</p>
+      </div>
+      <div class="po-quadrant">
+        <p class="po-quadrant-label">Typisch Markt</p>
+        <p class="po-quadrant-title">Etablierte<br>Player</p>
+      </div>
+      <div class="po-quadrant">
+        <p class="po-quadrant-label">Preiskampf</p>
+        <p class="po-quadrant-title">Discount<br>Zone</p>
+      </div>
+      <div class="po-quadrant">
+        <p class="po-quadrant-label">Nischen</p>
+        <p class="po-quadrant-title">Spezialisten</p>
+      </div>
+      <div class="po-axis-y-line"></div>
+      <div class="po-axis-x">
+        <span>Niedrig differenziert</span>
+        <span>Hoch differenziert</span>
+      </div>
+      <div class="po-axis-y">
+        <span>Hoch begehrt</span>
+        <span>Niedrig begehrt</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM SECTION -->
+  <section class="problem-sec sec">
+    <div class="inner">
+      <p class="sec-label sr">01 — Das Problem</p>
+      <h2 class="sr sr-d1" style="font-family:var(--f-display);font-size:clamp(2.5rem,4vw,5rem);font-weight:900;text-transform:uppercase;line-height:.92;margin-bottom:0">Warum Positionierung<br>über alles entscheidet.</h2>
+      <div class="problem-grid">
+        <div class="problem-card sr">
+          <p class="problem-n">01</p>
+          <svg class="problem-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M22 4 L40 40 L4 40 Z"/>
+          </svg>
+          <h3 class="problem-title">Kein Preispremium</h3>
+          <p class="problem-desc">Wer nicht klar positioniert ist, konkurriert ausschließlich über den Preis. Du verhandelst deine Marge weg — Quartal für Quartal. Positionierung ist das Einzige, was diesen Kreislauf durchbricht.</p>
+        </div>
+        <div class="problem-card sr sr-d1">
+          <p class="problem-n">02</p>
+          <svg class="problem-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="22" cy="22" r="18"/><path d="M22 14 v8 l5 5"/>
+          </svg>
+          <h3 class="problem-title">Kein Wiedererkennungswert</h3>
+          <p class="problem-desc">Ohne klare Positionierung verschwindet deine Marke im Rauschen. Kunden erinnern sich an niemanden und wählen das, was sie zuletzt gesehen haben — nicht das Beste.</p>
+        </div>
+        <div class="problem-card sr sr-d2">
+          <p class="problem-n">03</p>
+          <svg class="problem-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M4 22 Q12 10 22 22 Q32 34 40 22"/>
+          </svg>
+          <h3 class="problem-title">Inkonsistente Botschaft</h3>
+          <p class="problem-desc">Jede Kampagne klingt anders. Marketing und Sales ziehen nicht in dieselbe Richtung. Ohne Positionierungs-Fundament bleibt jede Kommunikation Stückwerk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRAMEWORK SECTION -->
+  <section class="fw-sec sec" id="framework">
+    <div class="inner">
+      <div class="fw-head">
+        <div>
+          <p class="sec-label sr">02 — Methodik</p>
+          <h2 class="fw-title sr sr-d1">Das<br>Positionierungs-<br>Framework.</h2>
+        </div>
+        <p class="fw-intro sr sr-d2">Fünf aufeinanderfolgende Phasen — von der Marktanalyse bis zur kommunikativen Exekution. Kein Schritt ohne den vorherigen. Kein Ergebnis ohne das Fundament.</p>
+      </div>
+      <div class="fw-steps">
+        <div class="fw-step sr">
+          <div class="fw-step-top">
+            <span class="fw-step-n">01</span>
+            <span class="fw-step-dot"></span>
+          </div>
+          <h3 class="fw-step-title">Markt-Audit</h3>
+          <p class="fw-step-desc">Vollständige Analyse des Wettbewerbsfelds. Wo stehen Mitbewerber? Welche Positionen sind übersättigt, welche unbesetzt?</p>
+          <span class="fw-step-tag">1–2 Wochen</span>
+        </div>
+        <div class="fw-step sr sr-d1">
+          <div class="fw-step-top">
+            <span class="fw-step-n">02</span>
+            <span class="fw-step-dot"></span>
+          </div>
+          <h3 class="fw-step-title">Stärken-Analyse</h3>
+          <p class="fw-step-desc">Tiefeninterviews mit Kunden, Team und Stakeholdern. Wo liegt dein unbestrittener Vorteil — der, den du noch nicht kommunizierst?</p>
+          <span class="fw-step-tag">1 Woche</span>
+        </div>
+        <div class="fw-step sr sr-d2">
+          <div class="fw-step-top">
+            <span class="fw-step-n">03</span>
+            <span class="fw-step-dot"></span>
+          </div>
+          <h3 class="fw-step-title">Positions-Design</h3>
+          <p class="fw-step-desc">Die eigentliche Strategie: Welche Kategorie besetzt du? Was ist dein Claim, dein Beweis, dein Differenzierungs-Frame?</p>
+          <span class="fw-step-tag">1–2 Wochen</span>
+        </div>
+        <div class="fw-step sr sr-d3">
+          <div class="fw-step-top">
+            <span class="fw-step-n">04</span>
+            <span class="fw-step-dot"></span>
+          </div>
+          <h3 class="fw-step-title">Messaging-Architektur</h3>
+          <p class="fw-step-desc">Core Narrative, Wert-Propositionen, Zielgruppen-spezifische Botschaften — alles aus einem Guss, aufeinander aufbauend.</p>
+          <span class="fw-step-tag">1 Woche</span>
+        </div>
+        <div class="fw-step sr sr-d4">
+          <div class="fw-step-top">
+            <span class="fw-step-n">05</span>
+            <span class="fw-step-dot"></span>
+          </div>
+          <h3 class="fw-step-title">Roll-out Strategie</h3>
+          <p class="fw-step-desc">Wie bringst du die neue Positionierung auf alle Kanäle? Priorisierung, Timing, interne Adoption — bis zum ersten Kunden, der es versteht.</p>
+          <span class="fw-step-tag">Ongoing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENZIERUNG TABLE -->
+  <section class="diff-sec sec">
+    <div class="inner">
+      <div class="diff-grid">
+        <div class="diff-left">
+          <p class="sec-label sr">03 — Was wir anders machen</p>
+          <h2 class="diff-title sr sr-d1">Strategie,<br>nicht Theorie.</h2>
+          <p class="diff-subtitle sr sr-d2">Wir liefern keine PowerPoint-Folien, die in der Schublade verschwinden. Jede Positionierungs-Entscheidung ist direkt in Messaging, Design und Kanal-Strategie übersetzt.</p>
+          <div class="diff-checks sr sr-d3">
+            <div class="diff-check"><div class="diff-check-icon"></div><span>Quantitative Marktanalyse, keine Bauchentscheidungen</span></div>
+            <div class="diff-check"><div class="diff-check-icon"></div><span>Kundeninterviews als Datenbasis für echte Insights</span></div>
+            <div class="diff-check"><div class="diff-check-icon"></div><span>Direkte Übersetzung in Copy, Design und Kampagnen</span></div>
+            <div class="diff-check"><div class="diff-check-icon"></div><span>Messbare KPIs für Positionierungs-Erfolg</span></div>
+          </div>
+        </div>
+        <div class="diff-right sr sr-d2">
+          <div class="diff-row diff-header-row">
+            <div class="diff-cell">Standard-Agenturen</div>
+            <div class="diff-cell">Quantiflux</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-cell">Generische Zielgruppen-Personas</div>
+            <div class="diff-cell">Primärforschung mit echten Kunden</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-cell">Positionierung als Kreativ-Übung</div>
+            <div class="diff-cell">Positionierung als Business-Strategie</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-cell">Dokument-Deliverable, fertig</div>
+            <div class="diff-cell">Integration in alle Touchpoints</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-cell">Kein Erfolgs-Tracking</div>
+            <div class="diff-cell">KPIs & Quarterly Reviews</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-cell">6–12 Monate Projektzeit</div>
+            <div class="diff-cell">6–8 Wochen bis zur ersten Version</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-sec">
+    <div class="quote-inner">
+      <span class="quote-mark sr">"</span>
+      <p class="quote-text sr sr-d1">Positionierung ist nicht, was du mit einem Produkt machst. Positionierung ist, was du mit dem Verstand des potenziellen Kunden machst.</p>
+      <p class="quote-author sr sr-d2">Al Ries & Jack Trout · Positioning, 1981</p>
+    </div>
+  </section>
+
+  <!-- DELIVERABLES -->
+  <section class="deliver-sec">
+    <div class="deliver-inner">
+      <div class="deliver-top">
+        <div>
+          <p class="deliver-label">Was du bekommst</p>
+          <h2 class="deliver-title">Deine<br>Deliverables.</h2>
+        </div>
+        <p class="deliver-intro">Alle Ergebnisse sind sofort einsetzbar. Kein Strategiepapier das niemand liest — jedes Deliverable ist direkt in der Praxis anwendbar.</p>
+      </div>
+      <div class="deliver-grid">
+        <div class="deliver-item">
+          <span class="deliver-item-n">01</span>
+          <span class="deliver-item-name">Positions-Statement</span>
+          <p class="deliver-item-desc">Ein Satz, der alles auf den Punkt bringt. Die Grundlage jeder Kommunikation.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">02</span>
+          <span class="deliver-item-name">Wettbewerbs-Landkarte</span>
+          <p class="deliver-item-desc">Visualisierung des Marktes: Wo stehst du, wo sind Lücken, wo ist Übersättigung.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">03</span>
+          <span class="deliver-item-name">Messaging-Architektur</span>
+          <p class="deliver-item-desc">Core Message, Proof Points und zielgruppenspezifische Varianten für alle Kanäle.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">04</span>
+          <span class="deliver-item-name">Brand Story Framework</span>
+          <p class="deliver-item-desc">Das narrative Gerüst — von Gründer-Story bis Kundenerfolgs-Erzählung.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">05</span>
+          <span class="deliver-item-name">Differenzierungs-Matrix</span>
+          <p class="deliver-item-desc">Wo und wie du besser bist — belegt durch Daten, formuliert für Kunden.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">06</span>
+          <span class="deliver-item-name">Roll-out Plan</span>
+          <p class="deliver-item-desc">Priorisierte Umsetzungs-Roadmap für alle Kanäle mit konkreten nächsten Schritten.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">07</span>
+          <span class="deliver-item-name">KPI-Rahmen</span>
+          <p class="deliver-item-desc">Welche Metriken zeigen, dass deine Positionierung wirkt — und ab wann du nachjustierst.</p>
+        </div>
+        <div class="deliver-item">
+          <span class="deliver-item-n">08</span>
+          <span class="deliver-item-name">Quarterly Review</span>
+          <p class="deliver-item-desc">Drei Monate nach Go-live: Analyse, Learnings, und Optimierungsmaßnahmen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-sec sec">
+    <div class="inner" style="position:relative;z-index:1">
+      <p class="cta-label sr">Nächster Schritt</p>
+      <h2 class="cta-title sr sr-d1">Bereit, deine<br>Kategorie zu<br>definieren?</h2>
+      <p class="cta-sub sr sr-d2">Erstgespräch kostenlos. Wir schauen gemeinsam, wo du stehst — und wo du stehen könntest.</p>
+      <div class="cta-actions sr sr-d3">
+        <a href="mailto:hello@quantiflux.com" class="btn-red magnetic">Gespräch vereinbaren &nbsp;→</a>
+        <a href="marke-strategie.html" class="btn-ghost">← Zurück zu Marke &amp; Strategie</a>
+      </div>
+    </div>
+    <span class="cta-bg-word">POSITION</span>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-inner">
+      <div class="ft-top">
+        <div>
+          <a href="index.html" class="ft-logo"><img src="brand_assets/logo.png" alt="QUANTIFLUX"></a>
+          <p class="ft-brand-tagline">Wo Daten<br>auf Seele treffen.</p>
+        </div>
+        <div class="ft-col"><h4>Creative</h4><ul>
+          <li><a href="marke-strategie.html">Marke &amp; Strategie</a></li>
+          <li><a href="#">Video &amp; Foto</a></li>
+          <li><a href="#">Webdesign</a></li>
+        </ul></div>
+        <div class="ft-col"><h4>Marke &amp; Strategie</h4><ul>
+          <li><a href="brand-identity.html">Brand Identity</a></li>
+          <li><a href="positionierung.html">Positionierung</a></li>
+          <li><a href="content-strategie.html">Content-Strategie</a></li>
+        </ul></div>
+        <div class="ft-col"><h4>Kontakt</h4><ul>
+          <li><a href="mailto:hello@quantiflux.com">hello@quantiflux.com</a></li>
+          <li><a href="#">Wien, Österreich</a></li>
+        </ul></div>
+      </div>
+      <div class="ft-bot">
+        <p class="ft-copy">© 2026 Quantiflux. Alle Rechte vorbehalten.</p>
+        <div class="ft-links"><a href="#">Datenschutz</a><a href="#">Impressum</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const cur=document.getElementById('cur'),curRing=document.getElementById('cur-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(loop);})();
+    document.addEventListener('mousedown',()=>document.body.classList.add('cursor-click'));
+    document.addEventListener('mouseup',()=>document.body.classList.remove('cursor-click'));
+    document.querySelectorAll('a,button,.problem-card,.fw-step,.deliver-item').forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+    });
+    const mainNav=document.getElementById('mainNav');
+    window.addEventListener('scroll',()=>mainNav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+    const hamburger=document.getElementById('navHamburger'),navPanel=document.getElementById('navPanel');
+    hamburger.addEventListener('click',()=>{const o=hamburger.classList.toggle('open');hamburger.setAttribute('aria-expanded',o);navPanel.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';});
+    const backdrop=document.getElementById('mega-backdrop');
+    let activeMega=null,megaTimer=null;
+    function openMega(li){if(activeMega===li)return;closeMega();activeMega=li;li.classList.add('mega-open');const m=li.querySelector('.mega-menu');m.classList.add('is-visible');requestAnimationFrame(()=>m.classList.add('is-open'));if(window.innerWidth>900){backdrop.classList.add('visible');requestAnimationFrame(()=>backdrop.classList.add('faded'));}}
+    function closeMega(){if(!activeMega)return;const li=activeMega,m=li.querySelector('.mega-menu');activeMega=null;li.classList.remove('mega-open');m.classList.remove('is-open');backdrop.classList.remove('faded');setTimeout(()=>{if(!m.classList.contains('is-open'))m.classList.remove('is-visible');},320);setTimeout(()=>backdrop.classList.remove('visible'),320);}
+    document.querySelectorAll('.has-mega').forEach(li=>{
+      li.addEventListener('mouseenter',()=>{if(window.innerWidth<=900)return;clearTimeout(megaTimer);openMega(li);});
+      li.addEventListener('mouseleave',()=>{if(window.innerWidth<=900)return;megaTimer=setTimeout(closeMega,120);});
+      li.querySelector('a').addEventListener('click',e=>{if(window.innerWidth>900)return;e.preventDefault();if(li.classList.contains('mega-open')){li.classList.remove('mega-open');li.querySelector('.mega-menu').classList.remove('is-visible');}else{document.querySelectorAll('.has-mega.mega-open').forEach(o=>{o.classList.remove('mega-open');o.querySelector('.mega-menu').classList.remove('is-visible');});li.classList.add('mega-open');li.querySelector('.mega-menu').classList.add('is-visible');}});
+    });
+    document.querySelectorAll('.mega-menu').forEach(m=>{m.addEventListener('mouseenter',()=>clearTimeout(megaTimer));m.addEventListener('mouseleave',()=>{if(window.innerWidth<=900)return;megaTimer=setTimeout(closeMega,120);});});
+    backdrop.addEventListener('click',closeMega);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
+    const revObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.sr').forEach(el=>revObs.observe(el));
+    document.querySelectorAll('.magnetic').forEach(btn=>{
+      btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect(),dx=(e.clientX-r.left-r.width/2)*.28,dy=(e.clientY-r.top-r.height/2)*.28;btn.style.transform=`translate(${dx}px,${dy}px)`;});
+      btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+    });
+  </script>
+</body>
+</html>

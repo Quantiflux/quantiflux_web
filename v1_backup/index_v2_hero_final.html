@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUANTIFLUX — Kreativagentur Wien</title>
+  <meta name="description" content="QUANTIFLUX ist eine Kreativagentur aus Wien. Web Design, AI-Systeme, Brand Identity und Film. Kein Versprechen. Keine Buzzwords. Nur Arbeit, die bleibt.">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Three.js importmap -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <style>
+    /* ═══════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════ */
+    :root {
+      --black:      #000000;
+      --black-2:    #0A0A0A;
+      --black-3:    #111111;
+      --white:      #F5F2ED;
+      --orange:     #E42718;
+      --orange-2:   #FD5122;
+      --gray-mid:   #888888;
+      --gray-dim:   #333333;
+      --gray-line:  #222222;
+
+      --f-display:  'Space Grotesk', sans-serif;
+      --f-mono:     'IBM Plex Mono', monospace;
+
+      --nav-h: 72px;
+    }
+
+    /* ═══════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--f-display);
+      font-weight: 400;
+      line-height: 1.5;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* ═══════════════════════════════════════
+       CURSOR
+    ═══════════════════════════════════════ */
+    #cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 8px;
+      height: 8px;
+      background: var(--orange);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+
+    #cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(228, 39, 24, 0.45);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+
+    body.cursor-hover #cursor-ring {
+      width: 56px;
+      height: 56px;
+      border-color: rgba(228, 39, 24, 0.7);
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLL PROGRESS
+    ═══════════════════════════════════════ */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--orange);
+      z-index: 10000;
+      transition: width 0.1s linear;
+    }
+
+    /* ═══════════════════════════════════════
+       GRAIN OVERLAY
+    ═══════════════════════════════════════ */
+    #grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      pointer-events: none;
+      z-index: 8000;
+      opacity: 0.038;
+      animation: grain-shift 0.9s steps(1) infinite;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    @keyframes grain-shift {
+      0%   { transform: translate(0, 0); }
+      10%  { transform: translate(-2%, -4%); }
+      20%  { transform: translate(-5%, 2%); }
+      30%  { transform: translate(3%, -6%); }
+      40%  { transform: translate(-4%, 5%); }
+      50%  { transform: translate(-2%, -3%); }
+      60%  { transform: translate(5%, 3%); }
+      70%  { transform: translate(2%, -4%); }
+      80%  { transform: translate(-3%, 6%); }
+      90%  { transform: translate(4%, -2%); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* ═══════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 500;
+      background: transparent;
+      transition: background 0.4s ease, border-bottom 0.4s ease;
+    }
+
+    #nav.scrolled {
+      background: rgba(0, 0, 0, 0.92);
+      border-bottom: 1px solid var(--gray-line);
+    }
+
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-cta {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      padding: 10px 20px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--orange);
+      color: var(--black);
+    }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient orange light that connects text + 3D — same light source feel */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 65% 75% at 72% 52%, rgba(228,39,24,0.009) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 45% at 58% 60%, rgba(255,80,30,0.005) 0%, transparent 55%);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 56px 88px 56px;
+      padding-top: var(--nav-h);
+      position: relative;
+      z-index: 3;
+      max-width: 60%;
+      min-height: 100vh;
+    }
+
+    .hero-label {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 32px;
+    }
+
+    .hero-h1 {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(80px, 16vw, 240px);
+      line-height: 0.84;
+      letter-spacing: -0.03em;
+      margin-bottom: 36px;
+      overflow: visible;
+    }
+
+    .hero-h1 .line-white {
+      color: var(--white);
+      display: block;
+    }
+
+    .hero-h1 .line-orange {
+      color: var(--orange);
+      display: block;
+    }
+
+    .hero-tagline {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      max-width: 420px;
+      margin-bottom: 48px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      padding: 14px 28px;
+      background: transparent;
+      cursor: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange);
+      color: var(--black);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+      border: 1px solid rgba(245, 242, 237, 0.3);
+      padding: 14px 28px;
+      background: transparent;
+      cursor: none;
+      transition: border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--white);
+    }
+
+    /* Canvas: always absolute, never grid-column */
+    .hero-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 68%;   /* wider — object naturally spills behind text */
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Soft atmospheric fade — not a hard black wall */
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        #000000 0%,
+        rgba(0,0,0,0.82) 12%,
+        rgba(0,0,0,0.45) 28%,
+        rgba(0,0,0,0.10) 48%,
+        transparent 65%
+      );
+    }
+
+    #webgl-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Orange accent bar before headline */
+    .hero-accent-bar {
+      width: 48px;
+      height: 3px;
+      background: var(--orange);
+      margin-bottom: 28px;
+      flex-shrink: 0;
+    }
+
+    /* Scroll indicator bottom-left */
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 40px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--f-mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      z-index: 2;
+    }
+    .hero-scroll-line {
+      width: 36px;
+      height: 1px;
+      background: var(--gray-dim);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--orange);
+      animation: scroll-tick 2s ease-in-out infinite;
+    }
+    @keyframes scroll-tick {
+      0%   { left: -100%; }
+      50%  { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    /* Hero side counter */
+    .hero-side-info {
+      position: absolute;
+      right: 0;
+      bottom: 36px;
+      writing-mode: vertical-rl;
+      font-family: var(--f-mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      z-index: 2;
+      padding-right: 20px;
+    }
+
+    /* ═══════════════════════════════════════
+       MARQUEE
+    ═══════════════════════════════════════ */
+    #marquee-strip {
+      border-top: 1px solid var(--gray-line);
+      border-bottom: 1px solid var(--gray-line);
+      background: var(--black);
+      overflow: hidden;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .marquee-row {
+      display: flex;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee-forward 28s linear infinite;
+    }
+
+    .marquee-track--reverse {
+      animation: marquee-reverse 34s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      padding: 0 28px;
+      flex-shrink: 0;
+    }
+
+    .marquee-sep {
+      color: var(--orange);
+    }
+
+    @keyframes marquee-forward {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @keyframes marquee-reverse {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+
+    /* ═══════════════════════════════════════
+       SECTION SHARED
+    ═══════════════════════════════════════ */
+    .section-num {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(80px, 18vw, 280px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--gray-line);
+      user-select: none;
+      letter-spacing: -0.04em;
+    }
+
+    .section-label {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      margin-bottom: 24px;
+    }
+
+    /* ═══════════════════════════════════════
+       MANIFESTO — 02
+    ═══════════════════════════════════════ */
+    #agentur {
+      background: var(--black);
+      padding: 120px 40px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .manifesto-num-wrap {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      line-height: 1;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      gap: 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .manifesto-headline {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 6rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--white);
+    }
+
+    .manifesto-body {
+      font-size: 1.0625rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      margin-bottom: 60px;
+      max-width: 560px;
+    }
+
+    .beliefs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--gray-line);
+      margin-bottom: 60px;
+    }
+
+    .belief-item {
+      padding: 28px 0;
+      border-right: 1px solid var(--gray-line);
+      padding-right: 28px;
+      padding-left: 0;
+    }
+
+    .belief-item:first-child {
+      padding-left: 0;
+    }
+
+    .belief-item:last-child {
+      border-right: none;
+      padding-right: 0;
+      padding-left: 28px;
+    }
+
+    .belief-item:nth-child(2) {
+      padding-left: 28px;
+    }
+
+    .belief-num {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.15em;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .belief-title {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 0.875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .belief-body {
+      font-size: 0.8125rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+    }
+
+    .manifesto-quote {
+      font-family: var(--f-display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2vw, 1.875rem);
+      color: var(--orange);
+      line-height: 1.4;
+      border-left: 4px solid var(--orange);
+      padding-left: 28px;
+    }
+
+    /* ═══════════════════════════════════════
+       SERVICES — 03
+    ═══════════════════════════════════════ */
+    #leistungen {
+      background: var(--black-2);
+      padding: 120px 0 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .services-header {
+      padding: 0 40px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 80px;
+    }
+
+    .services-num-wrap {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .services-title {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(3rem, 6vw, 8rem);
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--white);
+    }
+
+    .service-list {
+      list-style: none;
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: start;
+      gap: 0 40px;
+      padding: 40px 40px;
+      border-top: 1px solid var(--gray-line);
+      position: relative;
+      transition: background 0.2s;
+      cursor: none;
+    }
+
+    .service-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--orange);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .service-row:hover::before {
+      transform: scaleY(1);
+    }
+
+    .service-row:hover {
+      background: rgba(228, 39, 24, 0.03);
+    }
+
+    .service-row:hover .svc-name {
+      color: var(--orange);
+    }
+
+    .service-row:hover .svc-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .service-row:last-child {
+      border-bottom: 1px solid var(--gray-line);
+    }
+
+    .svc-num-big {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--gray-dim);
+      letter-spacing: -0.04em;
+      align-self: start;
+    }
+
+    .svc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .svc-name {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      letter-spacing: -0.02em;
+      color: var(--white);
+      transition: color 0.2s;
+      text-transform: uppercase;
+    }
+
+    .svc-tags {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      text-transform: uppercase;
+    }
+
+    .svc-desc {
+      font-size: 0.9375rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+      max-width: 560px;
+      margin-top: 4px;
+    }
+
+    .svc-arrow {
+      font-family: var(--f-mono);
+      font-size: 1.5rem;
+      color: var(--orange);
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: opacity 0.2s, transform 0.2s;
+      align-self: center;
+    }
+
+    /* ═══════════════════════════════════════
+       WORK — 04
+    ═══════════════════════════════════════ */
+    #arbeit {
+      background: var(--black);
+      padding: 120px 40px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .work-num-wrap {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .work-title {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(3rem, 6vw, 8rem);
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--white);
+    }
+
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-item {
+      border-top: 1px solid var(--gray-line);
+      padding-top: 24px;
+      margin-bottom: 48px;
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .project-title {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .project-category {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+
+    .project-placeholder {
+      position: relative;
+      background: var(--black-3);
+      border: 1px solid var(--gray-line);
+      overflow: hidden;
+      cursor: none;
+      transition: border-color 0.25s;
+    }
+
+    .project-placeholder:hover {
+      border-color: var(--orange);
+    }
+
+    .project-placeholder:hover .proj-hover-label {
+      opacity: 1;
+    }
+
+    .project-placeholder:hover .proj-num {
+      color: rgba(228, 39, 24, 0.18);
+      -webkit-text-stroke-color: rgba(228, 39, 24, 0.18);
+    }
+
+    .project-placeholder--tall {
+      height: 400px;
+    }
+
+    .project-placeholder--med {
+      height: 300px;
+    }
+
+    .proj-num {
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: 22vw;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+      letter-spacing: -0.05em;
+      user-select: none;
+      transition: color 0.25s, -webkit-text-stroke-color 0.25s;
+    }
+
+    .proj-hover-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--f-mono);
+      font-size: 0.875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      opacity: 0;
+      transition: opacity 0.25s;
+      background: rgba(0,0,0,0.4);
+    }
+
+    /* ═══════════════════════════════════════
+       PHILOSOPHY — 05
+    ═══════════════════════════════════════ */
+    #philosophy {
+      background: var(--black-2);
+      padding: 140px 40px 140px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .philosophy-headline {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(80px, 15vw, 220px);
+      line-height: 0.84;
+      letter-spacing: -0.04em;
+      margin-bottom: 60px;
+    }
+
+    .philosophy-headline .ph-white {
+      display: block;
+      color: var(--white);
+    }
+
+    .philosophy-headline .ph-orange {
+      display: block;
+      color: var(--orange);
+    }
+
+    .philosophy-quote {
+      font-family: var(--f-display);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1rem, 1.75vw, 1.5rem);
+      color: var(--gray-mid);
+      max-width: 640px;
+      margin: 0 auto 48px;
+      line-height: 1.65;
+    }
+
+    .philosophy-divider {
+      width: 80px;
+      height: 4px;
+      background: var(--orange);
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+       CONTACT — 06
+    ═══════════════════════════════════════ */
+    #kontakt {
+      background: var(--black);
+      padding: 120px 40px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-num-wrap {
+      position: absolute;
+      top: -60px;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .contact-headline {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 7vw, 9rem);
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+    }
+
+    .contact-headline .ch-white {
+      color: var(--white);
+      display: block;
+    }
+
+    .contact-headline .ch-outline {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--orange);
+    }
+
+    .contact-divider {
+      width: 1px;
+      height: 320px;
+      background: var(--gray-line);
+      align-self: center;
+    }
+
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .contact-email {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: clamp(1.25rem, 2vw, 2rem);
+      color: var(--white);
+      border-bottom: 1px solid var(--gray-line);
+      padding-bottom: 24px;
+      transition: color 0.2s;
+    }
+
+    .contact-email:hover {
+      color: var(--orange);
+    }
+
+    .contact-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .contact-detail-label {
+      font-family: var(--f-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      margin-bottom: 4px;
+    }
+
+    .contact-detail-value {
+      font-size: 0.9375rem;
+      color: var(--white);
+    }
+
+    .contact-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    #footer {
+      background: var(--black);
+      border-top: 1px solid var(--gray-line);
+      padding: 32px 40px;
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .footer-logo img {
+      height: 22px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.5;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .footer-nav a {
+      font-family: var(--f-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover {
+      color: var(--gray-mid);
+    }
+
+    .footer-location {
+      font-family: var(--f-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--gray-line);
+    }
+
+    .footer-copy {
+      font-family: var(--f-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.1em;
+      color: var(--gray-dim);
+    }
+
+    .footer-built {
+      font-family: var(--f-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.1em;
+      color: var(--gray-dim);
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+
+    /* ═══════════════════════════════════════
+       REDUCED MOTION
+    ═══════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #grain { display: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .hero-left { max-width: 65%; padding: 0 40px 80px 40px; padding-top: var(--nav-h); }
+      .hero-right { width: 72%; }
+      .manifesto-grid { gap: 60px; }
+    }
+
+    @media (max-width: 900px) {
+      #hero { min-height: 100svh; }
+      /* Canvas = full-bleed background, faded */
+      .hero-right {
+        width: 100%;
+        opacity: 0.28;
+      }
+      .hero-right::before {
+        background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.5) 100%);
+      }
+      .hero-left {
+        max-width: 100%;
+        padding: 130px 28px 110px;
+        justify-content: center;
+        min-height: 100svh;
+      }
+      .hero-h1 { font-size: clamp(72px, 20vw, 160px); }
+      .hero-scroll { left: 28px; bottom: 28px; }
+      .hero-side-info { display: none; }
+
+      .manifesto-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .beliefs-grid {
+        grid-template-columns: 1fr;
+      }
+      .belief-item {
+        border-right: none;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        border-bottom: 1px solid var(--gray-line);
+      }
+      .belief-item:last-child { border-bottom: none; }
+
+      #agentur,
+      #leistungen,
+      #arbeit,
+      #philosophy,
+      #kontakt { padding: 80px 24px; }
+
+      .services-header { padding: 0 24px; }
+      .service-row { padding: 32px 24px; grid-template-columns: 60px 1fr auto; gap: 0 24px; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .contact-divider { display: none; }
+
+      #nav { padding: 0 24px; }
+      .nav-links { display: none; }
+
+      #footer { padding: 24px; }
+      .footer-nav { display: none; }
+      .footer-row { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-left { max-width: 100%; padding: 110px 20px 90px; }
+      .hero-h1 { font-size: clamp(62px, 22vw, 120px); }
+      .hero-ctas { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+
+      #agentur,
+      #leistungen,
+      #arbeit,
+      #philosophy,
+      #kontakt { padding: 64px 20px; }
+      .service-row { grid-template-columns: 48px 1fr; }
+      .svc-arrow { display: none; }
+
+      .contact-details { grid-template-columns: 1fr; }
+      .contact-btns { flex-direction: column; }
+
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Custom Cursor -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Scroll Progress -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Grain overlay -->
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════ -->
+  <nav id="nav" role="navigation" aria-label="Hauptnavigation">
+    <a href="#" class="nav-logo" aria-label="QUANTIFLUX — Startseite">
+      <img src="brand_assets/logo.png" alt="QUANTIFLUX Logo" width="140" height="28">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#leistungen">Leistungen</a></li>
+      <li><a href="#arbeit">Arbeit</a></li>
+      <li><a href="#agentur">Agentur</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <a href="#kontakt" class="nav-cta">Projekt starten →</a>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section id="hero" aria-label="Hero">
+    <div class="hero-left">
+      <p class="hero-label reveal">WIEN · EST. 2024 · KREATIVAGENTUR</p>
+      <div class="hero-accent-bar reveal"></div>
+      <h1 class="hero-h1 reveal reveal-delay-1">
+        <span class="line-white">WIR</span>
+        <span class="line-white">MACHEN</span>
+        <span class="line-orange">DIGITALES.</span>
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-2">
+        Kein Versprechen. Keine Buzzwords. Nur Arbeit, die bleibt.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="#kontakt" class="btn-primary">PROJEKT STARTEN →</a>
+        <a href="#arbeit" class="btn-secondary">UNSERE ARBEIT ↓</a>
+      </div>
+    </div>
+    <div class="hero-right" aria-hidden="true">
+      <canvas id="webgl-canvas"></canvas>
+    </div>
+    <!-- Scroll indicator -->
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+    <!-- Side info -->
+    <div class="hero-side-info" aria-hidden="true">Web Design · AI · Brand · Motion</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MARQUEE
+  ═══════════════════════════════════════ -->
+  <div id="marquee-strip" aria-hidden="true">
+    <div class="marquee-row">
+      <div class="marquee-track" id="marquee-1">
+        <!-- duplicated for seamless loop -->
+        <span class="marquee-item">Web Design <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">AI Development <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Brand Identity <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Motion &amp; Film <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Digital Experience <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Creative Strategy <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Web Design <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">AI Development <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Brand Identity <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Motion &amp; Film <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Digital Experience <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Creative Strategy <span class="marquee-sep">·</span></span>
+      </div>
+    </div>
+    <div class="marquee-row">
+      <div class="marquee-track marquee-track--reverse" id="marquee-2">
+        <span class="marquee-item">Wien <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Kreativagentur <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Seit 2024 <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">AI als Werkzeug <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Craft First <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Scale Always <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Wien <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Kreativagentur <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Seit 2024 <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">AI als Werkzeug <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Craft First <span class="marquee-sep">·</span></span>
+        <span class="marquee-item">Scale Always <span class="marquee-sep">·</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MANIFESTO — 02
+  ═══════════════════════════════════════ -->
+  <section id="agentur" aria-labelledby="agentur-heading">
+    <div class="manifesto-num-wrap" aria-hidden="true">
+      <span class="section-num">02</span>
+    </div>
+    <div class="manifesto-grid">
+      <div class="manifesto-left">
+        <p class="section-label reveal">— Wer wir sind</p>
+        <h2 class="manifesto-headline reveal reveal-delay-1" id="agentur-heading">
+          WIR NUTZEN AI<br>ALS WERKZEUG —<br>NICHT ALS PRODUKT.
+        </h2>
+      </div>
+      <div class="manifesto-right">
+        <p class="manifesto-body reveal">
+          Wir sind ein kleines, interdisziplinäres Studio in Wien. Unser Team verbindet Expertise in Design, Technologie und Kommunikation zu digitalen Erlebnissen, die funktionieren — und auffallen. AI ist für uns ein Werkzeug, kein Allheilmittel.
+        </p>
+        <div class="beliefs-grid reveal reveal-delay-1">
+          <div class="belief-item">
+            <div class="belief-num">01</div>
+            <div class="belief-title">CRAFT FIRST</div>
+            <p class="belief-body">Qualität vor Quantität. Jedes Projekt verdient handwerkliche Sorgfalt.</p>
+          </div>
+          <div class="belief-item">
+            <div class="belief-num">02</div>
+            <div class="belief-title">SPEED SECOND</div>
+            <p class="belief-body">AI beschleunigt unseren Workflow — ohne Abstriche bei der Qualität.</p>
+          </div>
+          <div class="belief-item">
+            <div class="belief-num">03</div>
+            <div class="belief-title">SCALE ALWAYS</div>
+            <p class="belief-body">Systeme denken, die mitwachsen. Investition, nicht Aufwand.</p>
+          </div>
+        </div>
+        <blockquote class="manifesto-quote reveal reveal-delay-2">
+          „Das Handwerk macht den Unterschied. Technologie beschleunigt es."
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SERVICES — 03
+  ═══════════════════════════════════════ -->
+  <section id="leistungen" aria-labelledby="leistungen-heading">
+    <div class="services-header">
+      <div class="services-num-wrap" aria-hidden="true">
+        <span class="section-num">03</span>
+      </div>
+      <p class="section-label reveal">— Was wir machen</p>
+      <h2 class="services-title reveal reveal-delay-1" id="leistungen-heading">WAS WIR MACHEN.</h2>
+    </div>
+    <ul class="service-list" role="list">
+      <li class="service-row reveal" tabindex="0">
+        <div class="svc-num-big" aria-hidden="true">01</div>
+        <div class="svc-content">
+          <div class="svc-name">Web Design &amp; Development</div>
+          <div class="svc-tags">Next.js · Figma · Sanity · E-Commerce</div>
+          <p class="svc-desc">Websites und Web-Apps, die konvertieren. Von der UX-Konzeption bis zum live Code.</p>
+        </div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
+      </li>
+      <li class="service-row reveal reveal-delay-1" tabindex="0">
+        <div class="svc-num-big" aria-hidden="true">02</div>
+        <div class="svc-content">
+          <div class="svc-name">AI-gestützte Systeme</div>
+          <div class="svc-tags">LLM · Automation · Agenten · API</div>
+          <p class="svc-desc">Intelligente Automatisierung, Chatbots und maßgeschneiderte Tools für echte Workflows.</p>
+        </div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
+      </li>
+      <li class="service-row reveal reveal-delay-2" tabindex="0">
+        <div class="svc-num-big" aria-hidden="true">03</div>
+        <div class="svc-content">
+          <div class="svc-name">Brand &amp; Visual Identity</div>
+          <div class="svc-tags">Logo · Brand Guide · Typografie</div>
+          <p class="svc-desc">Ein kohärentes visuelles System, das Ihre Marke unverwechselbar macht.</p>
+        </div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
+      </li>
+      <li class="service-row reveal reveal-delay-3" tabindex="0">
+        <div class="svc-num-big" aria-hidden="true">04</div>
+        <div class="svc-content">
+          <div class="svc-name">Motion &amp; Film Production</div>
+          <div class="svc-tags">Produktion · Motion · After Effects</div>
+          <p class="svc-desc">Imagefilme, Social-Content und Motion Graphics — Bewegtbild, das bleibt.</p>
+        </div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
+      </li>
+      <li class="service-row reveal reveal-delay-4" tabindex="0">
+        <div class="svc-num-big" aria-hidden="true">05</div>
+        <div class="svc-content">
+          <div class="svc-name">Content &amp; Mediastrategie</div>
+          <div class="svc-tags">SEO · Redaktion · Social · Strategie</div>
+          <p class="svc-desc">Strategische Inhalte für alle Kanäle. Redaktionelle Planung bis Content-Architektur.</p>
+        </div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       WORK — 04
+  ═══════════════════════════════════════ -->
+  <section id="arbeit" aria-labelledby="arbeit-heading">
+    <div class="work-header">
+      <div>
+        <p class="section-label reveal">— Unsere Arbeit</p>
+        <h2 class="work-title reveal reveal-delay-1" id="arbeit-heading">UNSERE ARBEIT.</h2>
+      </div>
+      <div class="work-num-wrap" aria-hidden="true">
+        <span class="section-num">04</span>
+      </div>
+    </div>
+
+    <div class="project-list">
+      <article class="project-item reveal">
+        <div class="project-meta">
+          <h3 class="project-title">Mayer &amp; Partner Rechtsanwälte</h3>
+          <span class="project-category">Wien — 2024 · Brand Identity · Web Design</span>
+        </div>
+        <div class="project-placeholder project-placeholder--tall">
+          <span class="proj-num" aria-hidden="true">01</span>
+          <div class="proj-hover-label">ANSEHEN →</div>
+        </div>
+      </article>
+
+      <article class="project-item reveal reveal-delay-1">
+        <div class="project-meta">
+          <h3 class="project-title">Grünwald Organic</h3>
+          <span class="project-category">Wien — 2024 · E-Commerce · Branding</span>
+        </div>
+        <div class="project-placeholder project-placeholder--med">
+          <span class="proj-num" aria-hidden="true">02</span>
+          <div class="proj-hover-label">ANSEHEN →</div>
+        </div>
+      </article>
+
+      <article class="project-item reveal reveal-delay-2">
+        <div class="project-meta">
+          <h3 class="project-title">ViennaTech Summit</h3>
+          <span class="project-category">Wien — 2024 · Motion · Event Film</span>
+        </div>
+        <div class="project-placeholder project-placeholder--med">
+          <span class="proj-num" aria-hidden="true">03</span>
+          <div class="proj-hover-label">ANSEHEN →</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PHILOSOPHY — 05
+  ═══════════════════════════════════════ -->
+  <section id="philosophy" aria-label="Philosophie">
+    <h2 class="philosophy-headline reveal">
+      <span class="ph-white">GUTE</span>
+      <span class="ph-white">ARBEIT</span>
+      <span class="ph-orange">SPRICHT.</span>
+    </h2>
+    <p class="philosophy-quote reveal reveal-delay-1">
+      Nicht das lauteste Studio — sondern das, dessen Arbeit überzeugend für sich spricht.
+    </p>
+    <div class="philosophy-divider reveal reveal-delay-2"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CONTACT — 06
+  ═══════════════════════════════════════ -->
+  <section id="kontakt" aria-labelledby="kontakt-heading">
+    <div class="contact-num-wrap" aria-hidden="true">
+      <span class="section-num">06</span>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-left">
+        <p class="section-label reveal">— Jetzt anfragen</p>
+        <h2 class="contact-headline reveal reveal-delay-1" id="kontakt-heading">
+          <span class="ch-white">PROJEKT</span>
+          <span class="ch-outline">STARTEN?</span>
+        </h2>
+      </div>
+
+      <div class="contact-divider" aria-hidden="true"></div>
+
+      <div class="contact-right">
+        <a href="mailto:hello@quantiflux.at" class="contact-email reveal">
+          hello@quantiflux.at
+        </a>
+        <div class="contact-details reveal reveal-delay-1">
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Standort</div>
+            <div class="contact-detail-value">Wien, Österreich</div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Verfügbarkeit</div>
+            <div class="contact-detail-value">Ab Q2 2025</div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Reaktionszeit</div>
+            <div class="contact-detail-value">24 Stunden</div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Sprachen</div>
+            <div class="contact-detail-value">DE · EN</div>
+          </div>
+        </div>
+        <div class="contact-btns reveal reveal-delay-2">
+          <a href="mailto:hello@quantiflux.at" class="btn-primary">E-MAIL SCHREIBEN →</a>
+          <a href="#kontakt" class="btn-secondary">TERMIN BUCHEN</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer id="footer" role="contentinfo">
+    <div class="footer-row">
+      <a href="#" class="footer-logo" aria-label="QUANTIFLUX">
+        <img src="brand_assets/logo.png" alt="QUANTIFLUX" width="120" height="22">
+      </a>
+      <ul class="footer-nav" role="list">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#arbeit">Arbeit</a></li>
+        <li><a href="#agentur">Agentur</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <span class="footer-location">Wien · 2024</span>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 QUANTIFLUX. Alle Rechte vorbehalten.</span>
+      <span class="footer-built">Designed &amp; built in Wien.</span>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════ -->
+  <script>
+    /* ─────────────────────────────────────
+       CURSOR
+    ───────────────────────────────────── */
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+
+    let mx = -100, my = -100;
+    let rx = -100, ry = -100;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+    });
+
+    (function animateRing() {
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+      requestAnimationFrame(animateRing);
+    })();
+
+    // hover state for interactive elements
+    document.querySelectorAll('a, button, .service-row, .project-placeholder, [tabindex]').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    /* ─────────────────────────────────────
+       SCROLL PROGRESS
+    ───────────────────────────────────── */
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total    = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrolled / total * 100) + '%';
+    }, { passive: true });
+
+    /* ─────────────────────────────────────
+       NAV SCROLL STATE
+    ───────────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ─────────────────────────────────────
+       SCROLL REVEAL
+    ───────────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => revealObs.observe(el));
+  </script>
+
+  <!-- ═══════════════════════════════════════
+       THREE.JS WEBGL — HERO SCENE V2
+  ═══════════════════════════════════════ -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { OutputPass }      from 'three/addons/postprocessing/OutputPass.js';
+
+    const canvas = document.getElementById('webgl-canvas');
+    if (!canvas) throw new Error('no canvas');
+
+    /* ── Renderer ─────────────────────────── */
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+
+    /* ── Scene & Camera ───────────────────── */
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.z = 5.8;
+
+    /* ── Post-processing: Bloom ───────────── */
+    const composer   = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    const bloomPass  = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.18, 0.3, 0.15);
+    const outputPass = new OutputPass();
+    composer.addPass(renderPass);
+    composer.addPass(bloomPass);
+    composer.addPass(outputPass);
+
+    /* ── Colors ───────────────────────────── */
+    const C_HOT   = new THREE.Color(0xFF3A1A);
+    const C_COOL  = new THREE.Color(0xFF8855);
+    const C_WHITE = new THREE.Color(0xFFEEDD);
+    const C_MID   = new THREE.Color(0xE42718);
+
+    /* ══════════════════════════════════════
+       DISTORTION SHADER
+       — ripple wave emanates from mouse hit
+       — lines glow brighter on proximity
+    ══════════════════════════════════════ */
+    const distortVert = /* glsl */`
+      uniform float uTime;
+      uniform float uHover;       // 0–1 lerped on canvas enter/leave
+      uniform vec3  uMouseWorld;  // mouse projected onto z=0 plane
+
+      void main() {
+        vec3 pos = position;
+
+        // Distance from mouse contact in model space
+        float dist = length(pos - uMouseWorld);
+
+        // Ripple wave: high freq, decays with distance
+        float falloff = 1.0 - smoothstep(0.0, 2.6, dist);
+        float ripple  = sin(dist * 6.0 - uTime * 7.0) * falloff * uHover;
+
+        // Displace outward from model origin
+        pos += normalize(pos + vec3(0.0001)) * ripple * 0.20;
+
+        // Subtle global pulse on hover entry
+        pos *= 1.0 + uHover * 0.025 * sin(uTime * 2.5);
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      }
+    `;
+
+    const distortFrag = /* glsl */`
+      uniform vec3  uColor;
+      uniform float uOpacity;
+      uniform float uHover;
+      uniform float uTime;
+      uniform vec3  uMouseWorld;
+
+      void main() {
+        // Slight brightness boost on hover
+        vec3 col = uColor * (1.0 + uHover * 0.55);
+        float alpha = uOpacity * (1.0 + uHover * 0.25);
+        gl_FragColor = vec4(col, alpha);
+      }
+    `;
+
+    /* ── Shader material factory ──────────── */
+    function shaderMat(color, opacity) {
+      return new THREE.ShaderMaterial({
+        vertexShader:   distortVert,
+        fragmentShader: distortFrag,
+        uniforms: {
+          uTime:       { value: 0 },
+          uHover:      { value: 0 },
+          uMouseWorld: { value: new THREE.Vector3() },
+          uColor:      { value: color.clone() },
+          uOpacity:    { value: opacity },
+        },
+        transparent: true,
+        depthWrite:  false,
+      });
+    }
+
+    /* ── Plain line material (no distortion needed) */
+    const lineMat = (color, opacity) => new THREE.LineBasicMaterial({
+      color, transparent: true, opacity, depthWrite: false,
+    });
+
+    /* ══════════════════════════════════════
+       GEOMETRY LAYERS
+    ══════════════════════════════════════ */
+    // Layer 1 — Core TorusKnot (2,3)
+    const coreMat  = shaderMat(C_HOT, 1.0);
+    const coreMesh = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.TorusKnotGeometry(1.25, 0.36, 180, 20, 2, 3)),
+      coreMat
+    );
+    scene.add(coreMesh);
+
+    // Layer 2 — Ghost TorusKnot (3,5)
+    const ghostMat  = shaderMat(C_COOL, 0.15);
+    const ghostMesh = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.TorusKnotGeometry(1.55, 0.22, 140, 14, 3, 5)),
+      ghostMat
+    );
+    scene.add(ghostMesh);
+
+    // Layer 3 — Icosahedron cage
+    const icoMat  = lineMat(C_MID, 0.10);
+    const icoMesh = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(2.7, 1)), icoMat
+    );
+    scene.add(icoMesh);
+
+    // Layer 4 — Dodecahedron
+    const dodMat  = lineMat(C_HOT, 0.07);
+    const dodMesh = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.DodecahedronGeometry(2.0, 0)), dodMat
+    );
+    scene.add(dodMesh);
+
+    // Layer 5 — Orbital rings
+    function makeRing(radius, rot) {
+      const m = lineMat(C_HOT, 0.10);
+      const mesh = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.TorusGeometry(radius, 0.008, 3, 64)), m
+      );
+      mesh.rotation.set(...rot);
+      return mesh;
+    }
+    const ring1 = makeRing(2.1, [Math.PI / 2, 0, 0]);
+    const ring2 = makeRing(2.1, [0, 0, Math.PI / 5]);
+    const ring3 = makeRing(2.1, [Math.PI / 3, Math.PI / 4, 0]);
+    scene.add(ring1, ring2, ring3);
+
+    // Layer 6 — Particles
+    function makeParticles(count, rMin, rMax, color, size, opacity) {
+      const pos = new Float32Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        const r = rMin + Math.random() * (rMax - rMin);
+        const th = Math.random() * Math.PI * 2;
+        const ph = Math.acos(2 * Math.random() - 1);
+        pos[i*3]   = r * Math.sin(ph) * Math.cos(th);
+        pos[i*3+1] = r * Math.sin(ph) * Math.sin(th);
+        pos[i*3+2] = r * Math.cos(ph);
+      }
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      return new THREE.Points(g, new THREE.PointsMaterial({
+        color, size, transparent: true, opacity, sizeAttenuation: true, depthWrite: false,
+      }));
+    }
+    const innerPts = makeParticles(120, 1.5, 2.4, C_HOT,   0.055, 0.60);
+    const outerPts = makeParticles(280, 2.6, 5.5, C_WHITE,  0.030, 0.18);
+    const glowPts  = makeParticles(40,  0.8, 1.4, C_HOT,   0.090, 0.80);
+    scene.add(innerPts, outerPts, glowPts);
+
+    // Layer 7 — Core sphere
+    const coreSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(0.22, 16, 16),
+      new THREE.MeshBasicMaterial({ color: C_HOT, transparent: true, opacity: 0.85 })
+    );
+    scene.add(coreSphere);
+
+    /* ══════════════════════════════════════
+       MOUSE — world-space projection + hover
+    ══════════════════════════════════════ */
+    const raycaster   = new THREE.Raycaster();
+    const mouse2D     = new THREE.Vector2();
+    const mousePlane  = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const mouseWorld  = new THREE.Vector3();
+
+    let targetX = 0, targetY = 0, curX = 0, curY = 0;
+    let hoverTarget = 0, hoverCur = 0;
+
+    // Global parallax (whole doc)
+    document.addEventListener('mousemove', e => {
+      targetX = (e.clientX / window.innerWidth  - 0.5) * 1.4;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 1.0;
+    });
+
+    // Canvas-specific: distortion + glow
+    canvas.addEventListener('mouseenter', () => { hoverTarget = 1; });
+    canvas.addEventListener('mouseleave', () => { hoverTarget = 0; });
+    canvas.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse2D.x =  ((e.clientX - r.left) / r.width)  * 2 - 1;
+      mouse2D.y = -((e.clientY - r.top)  / r.height) * 2 + 1;
+      raycaster.setFromCamera(mouse2D, camera);
+      raycaster.ray.intersectPlane(mousePlane, mouseWorld);
+    });
+
+    /* ── Scroll parallax ──────────────────── */
+    let scrollY = 0;
+    window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+    /* ── Resize ───────────────────────────── */
+    function resize() {
+      const p = canvas.parentElement;
+      if (!p) return;
+      const w = p.clientWidth, h = p.clientHeight;
+      renderer.setSize(w, h);
+      composer.setSize(w, h);
+      bloomPass.resolution.set(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    /* ── Shared uniform update helper ─────── */
+    function updateShader(mat, t, hover, mw) {
+      mat.uniforms.uTime.value       = t;
+      mat.uniforms.uHover.value      = hover;
+      mat.uniforms.uMouseWorld.value.copy(mw);
+    }
+
+    /* ── Animation loop ───────────────────── */
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      /* Lerps */
+      curX     += (targetX     - curX)     * 0.035;
+      curY     += (targetY     - curY)     * 0.035;
+      hoverCur += (hoverTarget - hoverCur) * 0.045;
+
+      /* Convert mouseWorld to coreMesh local space */
+      const mwLocal = mouseWorld.clone()
+        .applyMatrix4(coreMesh.matrixWorld.clone().invert());
+      const mwLocalGhost = mouseWorld.clone()
+        .applyMatrix4(ghostMesh.matrixWorld.clone().invert());
+
+      /* Update shader uniforms */
+      updateShader(coreMat,  t, hoverCur, mwLocal);
+      updateShader(ghostMat, t, hoverCur * 0.7, mwLocalGhost);
+
+      /* Bloom: quiet idle → reactive on hover */
+      bloomPass.strength = 0.15
+        + 0.05 * Math.abs(Math.sin(t * 0.35))
+        + hoverCur * 1.85;
+
+      /* Breathing */
+      const breath  = 1 + 0.018 * Math.sin(t * 0.7);
+      const breath2 = 1 + 0.012 * Math.sin(t * 0.45 + 1.2);
+
+      /* Core knot */
+      coreMesh.rotation.y = t * 0.22 + curX * 1.1;
+      coreMesh.rotation.x = t * 0.14 - curY * 0.85;
+      coreMesh.rotation.z = t * 0.06;
+      coreMesh.scale.setScalar(breath);
+      coreMat.uniforms.uOpacity.value = 0.82 + 0.18 * Math.sin(t * 1.1);
+
+      /* Ghost knot */
+      ghostMesh.rotation.y = -t * 0.17 + curX * 0.5;
+      ghostMesh.rotation.x =  t * 0.11 + curY * 0.4;
+      ghostMesh.rotation.z = -t * 0.08;
+      ghostMesh.scale.setScalar(breath2);
+      ghostMat.uniforms.uOpacity.value = 0.08 + 0.09 * Math.abs(Math.sin(t * 0.6 + 0.5));
+
+      /* Icosahedron */
+      icoMesh.rotation.y = -t * 0.07 - curX * 0.25;
+      icoMesh.rotation.x = -t * 0.05 + curY * 0.2;
+      icoMesh.rotation.z =  t * 0.03;
+      icoMat.opacity = 0.06 + 0.06 * Math.sin(t * 0.4) + hoverCur * 0.06;
+
+      /* Dodecahedron */
+      dodMesh.rotation.y =  t * 0.10 + curX * 0.15;
+      dodMesh.rotation.x = -t * 0.08;
+      dodMesh.rotation.z =  t * 0.05;
+      dodMat.opacity = 0.04 + 0.04 * Math.sin(t * 0.55 + 1.0) + hoverCur * 0.04;
+
+      /* Rings */
+      ring1.rotation.z = t * 0.18 + curX * 0.3;
+      ring1.rotation.x = Math.PI / 2 + t * 0.06;
+      ring2.rotation.y = t * 0.14;
+      ring2.rotation.z = t * 0.10 - curY * 0.2;
+      ring3.rotation.x = Math.PI / 3 + t * 0.09;
+      ring3.rotation.z = t * 0.13 + curX * 0.2;
+      ring1.material.opacity = 0.08 + 0.07 * Math.sin(t * 0.9)       + hoverCur * 0.18;
+      ring2.material.opacity = 0.08 + 0.07 * Math.sin(t * 0.7 + 1.0) + hoverCur * 0.18;
+      ring3.material.opacity = 0.08 + 0.07 * Math.sin(t * 1.1 + 2.0) + hoverCur * 0.18;
+
+      /* Particles */
+      innerPts.rotation.y = t * 0.28 + curX * 0.6;
+      innerPts.rotation.x = t * 0.12 - curY * 0.4;
+      innerPts.material.opacity = 0.32 + 0.18 * Math.sin(t * 0.8) + hoverCur * 0.28;
+      innerPts.material.size    = 0.055 + hoverCur * 0.030;
+
+      outerPts.rotation.y = t * 0.04;
+      outerPts.rotation.z = t * 0.02;
+      outerPts.material.opacity = 0.10 + 0.07 * Math.sin(t * 0.3 + 0.5) + hoverCur * 0.10;
+
+      glowPts.rotation.y = -t * 0.35 + curX * 0.8;
+      glowPts.rotation.x =  t * 0.20 - curY * 0.6;
+      glowPts.material.opacity = 0.42 + 0.22 * Math.sin(t * 1.8) + hoverCur * 0.35;
+
+      /* Core sphere */
+      coreSphere.scale.setScalar(1 + 0.09 * Math.sin(t * 1.4) + hoverCur * 0.15);
+      coreSphere.material.opacity = 0.55 + 0.20 * Math.sin(t * 1.4) + hoverCur * 0.30;
+
+      /* Scene global */
+      scene.rotation.y = curX * 0.18;
+      scene.rotation.x = -curY * 0.12;
+      scene.position.y = -scrollY * 0.0008;
+
+      camera.position.x = Math.sin(t * 0.12) * 0.12;
+      camera.position.y = Math.cos(t * 0.09) * 0.08;
+      camera.lookAt(scene.position);
+
+      composer.render();
+    }
+
+    animate();
+  </script>
+</body>
+</html>
